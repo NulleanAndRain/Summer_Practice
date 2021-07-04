@@ -11,7 +11,7 @@ namespace Library.DAL.Interface {
 		List<Book> GetBooks();
 		List<Book> GetBooksWithName(string name);
 		List<Book> GetBooksWithAuthors(string[] authors);
-		void EditBook(int id, Book newBook);
+		void EditBook(int id, Book newData);
 		void DeleteBook(int id);
 
 		void CreateUser(User user);
