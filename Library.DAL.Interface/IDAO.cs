@@ -16,6 +16,7 @@ namespace Library.DAL.Interface {
 
 		void CreateUser(User user);
 		User GetUserWithName(string username);
+		User GetUserWithId(int id); 
 		void UpdateUser(int id, User newData);
 		void DeleteUser(int id);
 	}

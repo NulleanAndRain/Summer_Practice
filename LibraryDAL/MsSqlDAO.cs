@@ -14,7 +14,7 @@ namespace LibraryDAL {
 		private string ConnString => $@"Data Source=(LocalDB)\MSSQLLocalDB;
 			AttachDbFilename={Environment.CurrentDirectory}\LibDatabase.mdf;
 			Integrated Security=True";
-		
+
 		private void execWithConnection(Action<SqlConnection> action) {
 			using (SqlConnection conn = new SqlConnection(ConnString)) {
 				conn.Open();
@@ -104,10 +104,9 @@ namespace LibraryDAL {
 							VALUES ({user.Username}, {user.PassHash}, {user.FirstName}, {user.LastName}, {user.DateOfBirth})";
 			execNonQuerry(querry);
 		}
-		
-		public User GetUserWithName(string username) {
+
+		private User selectUser(string querry) {
 			User user = null;
-			var querry = $"SELECT * FROM Users WHERE Username = {username}";
 			void a(SqlConnection conn) {
 				var cmd = new SqlCommand(querry, conn);
 				using (var reader = cmd.ExecuteReader()) {
@@ -125,6 +124,17 @@ namespace LibraryDAL {
 			execWithConnection(a);
 			return user;
 		}
+
+		public User GetUserWithName(string username) {
+			var querry = $"SELECT * FROM Users WHERE Username = {username}";
+			return selectUser(querry);
+		}
+
+		public User GetUserWithId(int id) {
+			var querry = $"SELECT * FROM Users WHERE ID = {id}";
+			return selectUser(querry);
+		}
+
 
 		public void UpdateUser(int id, User newData) {
 			var querry = $@"UPDATE Users
