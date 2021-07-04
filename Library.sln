@@ -10,9 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.DAL", "LibraryDAL\Library.DAL.csproj", "{CD4629F5-C215-4895-B95E-97FB582123FE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PL", "PL", "{B6744C2B-547B-43D1-890A-E577CC4EF695}"
-	ProjectSection(SolutionItems) = preProject
-		LibraryPL\Img\profile.png = LibraryPL\Img\profile.png
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BLL", "BLL", "{AB7E5304-2A50-4A3D-BF8C-C577DB744FA5}"
 EndProject
@@ -27,11 +24,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Dependencies", "Library.DependencyResolver\Library.Dependencies.csproj", "{6ADCCC49-B2C9-4B75-A771-991F1F4917A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Entities", "Library.Entities\Library.Entities.csproj", "{4AF4A69C-19EC-48C0-8636-61FFA6C1A578}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Img", "Img", "{C4E85DD8-E753-47D6-A861-B0B797522EBD}"
-	ProjectSection(SolutionItems) = preProject
-		LibraryPL\Img\profile.png = LibraryPL\Img\profile.png
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,7 +71,6 @@ Global
 		{CD3B761D-E6C9-47B8-B5FE-2CA77A72B551} = {2D0CEFAD-B023-4CEB-A54A-A955A674B118}
 		{6ADCCC49-B2C9-4B75-A771-991F1F4917A3} = {A0DE3E56-7DFD-4D2D-8C12-2F34E374B903}
 		{4AF4A69C-19EC-48C0-8636-61FFA6C1A578} = {A0DE3E56-7DFD-4D2D-8C12-2F34E374B903}
-		{C4E85DD8-E753-47D6-A861-B0B797522EBD} = {B6744C2B-547B-43D1-890A-E577CC4EF695}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9ED22C78-4986-4E7D-8073-68C73A08B64D}

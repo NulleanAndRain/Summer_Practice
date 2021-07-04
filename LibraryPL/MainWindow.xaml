@@ -14,7 +14,7 @@
                     <Button Content="Log In" Margin="85,10,0,10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Width="75"/>
                 </Grid>
                 <Grid x:Name="HeaderLogged" Margin="532,10,10,10" Visibility="Hidden">
-                    <Image HorizontalAlignment="Left" Width="50" Source="profile.png"/>
+                    <Image HorizontalAlignment="Left" Width="50" Source="Img/profile.png"/>
                     <Grid Margin="50,0,0,0">
                         <Label Content="User Name" Margin="10,0,10,10" FontSize="20" FontFamily="Segoe UI Light"/>
                         <Button Content="Edit Profile" Margin="10,30,0,0" VerticalAlignment="Top" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF311A6C" FontFamily="Segoe UI Light" HorizontalAlignment="Left" Width="75"/>
