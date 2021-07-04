@@ -41,12 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library.BLL.Interface\Library.BLL.Interface.csproj">
       <Project>{7c49aaa3-5f6f-4297-b3b5-75b160032256}</Project>
       <Name>Library.BLL.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Library.DAL.Interface\Library.DAL.Interface.csproj">
+      <Project>{cd3b761d-e6c9-47b8-b5fe-2ca77a72b551}</Project>
+      <Name>Library.DAL.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\Library.Entities\Library.Entities.csproj">
       <Project>{4af4a69c-19ec-48c0-8636-61ffa6c1a578}</Project>

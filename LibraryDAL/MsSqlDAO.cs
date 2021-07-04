@@ -8,31 +8,33 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LibraryDAL {
-	public class MsSqlDAO : IDAO {
+	public class MsSqlDAO : IDAO, IDisposable {
 		#region Common
 
 		private string ConnString => $@"Data Source=(LocalDB)\MSSQLLocalDB;
 			AttachDbFilename={Environment.CurrentDirectory}\LibDatabase.mdf;
 			Integrated Security=True";
+		private SqlConnection conn;
 
-		private void execWithConnection(Action<SqlConnection> action) {
-			using (SqlConnection conn = new SqlConnection(ConnString)) {
-				conn.Open();
-				action(conn);
-			}
+		public MsSqlDAO() {
+			conn = new SqlConnection(ConnString);
+			conn.Open();
+			var cmd = new SqlCommand("sp_setapprole lib_app DFa[7wzaVA", conn);
+			cmd.ExecuteNonQuery();
 		}
 
 		private void execNonQuerry(string querry, List<SqlParameter> _params = null) {
-			void a(SqlConnection conn) {
-				var cmd = new SqlCommand(querry, conn);
-				if (_params != null) {
-					foreach (var param in _params) {
-						cmd.Parameters.Add(param);
-					}
+			var cmd = new SqlCommand(querry, conn);
+			if (_params != null) {
+				foreach (var param in _params) {
+					cmd.Parameters.Add(param);
 				}
-				cmd.ExecuteNonQuery();
 			}
-			execWithConnection(a);
+			cmd.ExecuteNonQuery();
+		}
+
+		public void Dispose() {
+			if (conn != null) conn.Dispose();
 		}
 
 		#endregion
@@ -52,22 +54,20 @@ namespace LibraryDAL {
 
 		private List<Book> getBooksWithQuerry(string querry, List<SqlParameter> _params = null) {
 			List<Book> books = new List<Book>();
-			void a(SqlConnection conn) {
-				var cmd = new SqlCommand(querry, conn);
-				if (_params != null) {
-					foreach (var param in _params) {
-						cmd.Parameters.Add(param);
-					}
+			var cmd = new SqlCommand(querry, conn);
+			if (_params != null) {
+				foreach (var param in _params) {
+					cmd.Parameters.Add(param);
 				}
-				using (var reader = cmd.ExecuteReader()) {
-					while (reader.Read()) {
-						var book = new Book();
-						book.Id = reader.GetInt32(0);
-						book.Name = reader.GetString(1);
-						book.Authosrs = reader.GetString(2);
-						book.YearOfPublishing = reader.GetInt32(3);
-						books.Add(book);
-					}
+			}
+			using (var reader = cmd.ExecuteReader()) {
+				while (reader.Read()) {
+					var book = new Book();
+					book.Id = reader.GetInt32(0);
+					book.Name = reader.GetString(1);
+					book.Authosrs = reader.GetString(2);
+					book.YearOfPublishing = reader.GetInt32(3);
+					books.Add(book);
 				}
 			}
 			return books;
@@ -91,7 +91,6 @@ namespace LibraryDAL {
 					querry.Append("AND LIKE ");
 				}
 			}
-
 			return getBooksWithQuerry(querry.ToString(), _params);
 		}
 
@@ -141,24 +140,21 @@ namespace LibraryDAL {
 
 		private User selectUser(string querry, List<SqlParameter> _params) {
 			User user = null;
-			void a(SqlConnection conn) {
-				var cmd = new SqlCommand(querry, conn);
-				foreach (var param in _params) {
-					cmd.Parameters.Add(param);
-				}
-				using (var reader = cmd.ExecuteReader()) {
-					if (reader.Read()) {
-						user = new User();
-						user.Id = reader.GetInt32(0);
-						user.Username = reader.GetString(1);
-						user.PassHash = reader.GetString(2);
-						user.FirstName = reader.GetString(3);
-						user.LastName = reader.GetString(4);
-						user.DateOfBirth = reader.GetDateTime(5);
-					}
+			var cmd = new SqlCommand(querry, conn);
+			foreach (var param in _params) {
+				cmd.Parameters.Add(param);
+			}
+			using (var reader = cmd.ExecuteReader()) {
+				if (reader.Read()) {
+					user = new User();
+					user.Id = reader.GetInt32(0);
+					user.Username = reader.GetString(1);
+					user.PassHash = reader.GetString(2);
+					user.FirstName = reader.GetString(3);
+					user.LastName = reader.GetString(4);
+					user.DateOfBirth = reader.GetDateTime(5);
 				}
 			}
-			execWithConnection(a);
 			return user;
 		}
 
