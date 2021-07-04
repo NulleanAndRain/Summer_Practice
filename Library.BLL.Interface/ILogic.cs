@@ -16,8 +16,8 @@ namespace Library.BLL.Interface {
 
 		void CreateUser(User user, string pass, Action<User> onSuccess, Action<RejectData> onReject);
 		void LogIn(string username, string pass, Action<User> onSuccess, Action<RejectData> onReject);
-		void UpdateUser(int id, User newData, string pass, Action<User> onSuccess, Action<RejectData> onReject);
-		void DeleteUser(int id, string pass, Action<User> onSuccess, Action<RejectData> onReject);
+		void UpdateUser(User newData, string pass, Action onSuccess, Action<RejectData> onReject);
+		void DeleteUser(int id, string pass, Action onSuccess, Action<RejectData> onReject);
 		void LogOut(int id);
 	}
 }

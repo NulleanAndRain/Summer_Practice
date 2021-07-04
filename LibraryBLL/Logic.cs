@@ -25,6 +25,10 @@ namespace LibraryBLL {
 			onReject(new RejectData(RejectType.Unauthorised, "You are not authorised"));
 		}
 
+		void rejectPass(Action<RejectData> onReject) {
+			onReject(new RejectData(RejectType.WrongPass, "Password is incorrect"));
+		}
+
 		#region Books
 
 		public void AddBook(Book book, int userId, Action<string> onSuccess, Action<RejectData> onReject) {
@@ -106,7 +110,7 @@ namespace LibraryBLL {
 				}
 				var hash = getPassHash(pass, username);
 				if (!user.PassHash.Equals(hash)) {
-					onReject(new RejectData(RejectType.WrongPass, "Password is incorrect"));
+					rejectPass(onReject);
 					return;
 				}
 				loggedUsers.Add(user.Id);
@@ -120,17 +124,38 @@ namespace LibraryBLL {
 			loggedUsers.Remove(id);
 		}
 
-		public void UpdateUser(int id, User newData, string pass, Action<User> onSuccess, Action<RejectData> onReject) {
+		public void UpdateUser(User newData, string pass, Action onSuccess, Action<RejectData> onReject) {
 			try {
-				//var
+				var oldData = dao.GetUserWithId(newData.Id);
+				if (!oldData.PassHash.Equals(getPassHash(pass, oldData.Username))) {
+					rejectPass(onReject);
+					return;
+				}
+				if (!newData.Username.Equals(oldData.Username)) {
+					var user = dao.GetUserWithName(newData.Username);
+					if (user != null && user.Id != newData.Id) {
+						onReject(new RejectData(RejectType.UserExists, "Username is already taken"));
+						return;
+					}
+				}
+				dao.UpdateUser(newData.Id, newData);
 			} catch (Exception e) {
 				onReject(new RejectData(RejectType.Exeption, e.Message));
 			}
 		}
 
-		public void DeleteUser(int id, string pass, Action<User> onSuccess, Action<RejectData> onReject) {
+		public void DeleteUser(int id, string pass, Action onSuccess, Action<RejectData> onReject) {
 			try {
-
+				var user = dao.GetUserWithId(id);
+				if (user == null) {
+					onReject(new RejectData(RejectType.UserNotExist, "User not found"));
+					return;
+				}
+				if (!user.PassHash.Equals(getPassHash(pass, user.Username))) {
+					rejectPass(onReject);
+					return;
+				}
+				dao.DeleteUser(id);
 			} catch (Exception e) {
 				onReject(new RejectData(RejectType.Exeption, e.Message));
 			}
