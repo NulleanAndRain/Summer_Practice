@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LibraryPL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Library" Height="450" Width="800">
     <Grid>
         <Grid x:Name="MainPanel">
             <Grid x:Name="Header" Height="70" VerticalAlignment="Top" Background="#FFEAE4EE">
@@ -21,9 +21,99 @@
                         <Button Content="Log Out" Margin="0,30,10,0" VerticalAlignment="Top" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF311A6C" FontFamily="Segoe UI Light" HorizontalAlignment="Right" Width="75"/>
                     </Grid>
                 </Grid>
+                <Grid x:Name="HeaderControls" Margin="0,0,265,0">
+                    <Grid x:Name="Search" Margin="265,0,0,0">
+                        <TextBox x:Name="SearchInput" HorizontalAlignment="Left" Margin="10,20,0,18" TextWrapping="Wrap" Text="TextBox" Width="205" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2"/>
+                        <Button Margin="220,20,10,18" Background="White" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                            <Image Height="22" Width="22" Source="Img/magnifier.png"/>
+                        </Button>
+                    </Grid>
+                    <Grid x:Name="PageSelect" Margin="0,0,267,0">
+                        <Button Content="" Margin="10,20,0,18" BorderBrush="{x:Null}" HorizontalAlignment="Left" Width="32" Foreground="{x:Null}">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Img/arrowLeft.png"/>
+                            </Button.Background>
+                        </Button>
+                        <Button Content="" Margin="0,20,10,18" BorderBrush="{x:Null}" HorizontalAlignment="Right" Width="32" Foreground="{x:Null}">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Img/arrowRight.png"/>
+                            </Button.Background>
+                        </Button>
+                        <TextBox x:Name="PageSelectInput" Margin="47,23,118,21" TextWrapping="Wrap" Text="TextBox" BorderBrush="{x:Null}" SelectionBrush="#FF8D66A2" FontFamily="Segoe UI Light" FontSize="16" TextAlignment="Right"/>
+                        <Label Content="/ 1" Margin="138,19,47,19" FontFamily="Segoe UI Light" FontSize="16" Background="{x:Null}"/>
+
+                    </Grid>
+                </Grid>
             </Grid>
             <Grid x:Name="BooksGrid" Margin="35,75,35,35" Background="{x:Null}">
-
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid x:Name="Book_0_0" Grid.Row="0" Grid.Column="0" >
+                    <Grid x:Name="BookTemplate" Margin="10">
+                        <Image Margin="10,0" Height="80" VerticalAlignment="Top" Source="Img/book.png"/>
+                        <Label x:Name="_book_name" Content="Book name" HorizontalContentAlignment="Center" Margin="0,0,0,28" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="28"/>
+                        <Label x:Name="_book_authors" Content="Book authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="35"/>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="Book_0_1" Grid.Row="0" Grid.Column="1" >
+                    <Grid x:Name="BookTemplate_Copy" Margin="10">
+                        <Image Margin="10,0" Height="80" VerticalAlignment="Top" Source="Img/book.png"/>
+                        <Label x:Name="_book_name1" Content="Book name" HorizontalContentAlignment="Center" Margin="0,0,0,28" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="28"/>
+                        <Label x:Name="_book_authors1" Content="Book authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="35"/>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="Book_0_2" Grid.Row="0" Grid.Column="2" >
+                    <Grid x:Name="BookTemplate_Copy1" Margin="10">
+                        <Image Margin="10,0" Height="80" VerticalAlignment="Top" Source="Img/book.png"/>
+                        <Label x:Name="_book_name2" Content="Book name" HorizontalContentAlignment="Center" Margin="0,0,0,28" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="28"/>
+                        <Label x:Name="_book_authors2" Content="Book authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="35"/>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="Book_0_3" Grid.Row="0" Grid.Column="3" >
+                    <Grid x:Name="BookTemplate_Copy2" Margin="10">
+                        <Image Margin="10,0" Height="80" VerticalAlignment="Top" Source="Img/book.png"/>
+                        <Label x:Name="_book_name3" Content="Book name" HorizontalContentAlignment="Center" Margin="0,0,0,28" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="28"/>
+                        <Label x:Name="_book_authors3" Content="Book authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="35"/>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="Book_1_0" Grid.Row="1" Grid.Column="0">
+                    <Grid x:Name="BookTemplate_Copy3" Margin="10">
+                        <Image Margin="10,0" Height="80" VerticalAlignment="Top" Source="Img/book.png"/>
+                        <Label x:Name="_book_name4" Content="Book name" HorizontalContentAlignment="Center" Margin="0,0,0,28" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="28"/>
+                        <Label x:Name="_book_authors4" Content="Book authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="35"/>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="Book_1_1" Grid.Row="1" Grid.Column="1" >
+                    <Grid x:Name="BookTemplate_Copy4" Margin="10">
+                        <Image Margin="10,0" Height="80" VerticalAlignment="Top" Source="Img/book.png"/>
+                        <Label x:Name="_book_name5" Content="Book name" HorizontalContentAlignment="Center" Margin="0,0,0,28" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="28"/>
+                        <Label x:Name="_book_authors5" Content="Book authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="35"/>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="Book_1_2" Grid.Row="1" Grid.Column="2" >
+                    <Grid x:Name="BookTemplate_Copy5" Margin="10">
+                        <Image Margin="10,0" Height="80" VerticalAlignment="Top" Source="Img/book.png"/>
+                        <Label x:Name="_book_name6" Content="Book name" HorizontalContentAlignment="Center" Margin="0,0,0,28" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="28"/>
+                        <Label x:Name="_book_authors6" Content="Book authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="35"/>
+                    </Grid>
+                </Grid>
+                <Grid x:Name="Book_1_3" Grid.Row="1" Grid.Column="3" >
+                    <Grid x:Name="AddBookTemplate" Margin="10">
+                        <Button Content="" Margin="35,0,35,44" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="90" Width="90">
+                            <Button.Background>
+                                <ImageBrush ImageSource="Img/add.png" Stretch="Uniform"/>
+                            </Button.Background>
+                        </Button>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

@@ -107,5 +107,18 @@
   <ItemGroup>
     <Resource Include="Img\profile.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\magnifier.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\book.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\arrowLeft.png" />
+    <Resource Include="Img\arrowRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\add.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
