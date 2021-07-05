@@ -116,7 +116,7 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Grid x:Name="Login_Signup" Background="#FFEAE4EE">
+        <Grid x:Name="LoginSignupPanel" Background="#FFEAE4EE">
             <Grid x:Name="Login" Margin="221,0" Width="550" HorizontalAlignment="Center" Visibility="Hidden">
                 <Label Content="Log in" HorizontalAlignment="Center" Margin="0,0,0,290" FontSize="32" FontFamily="Segoe UI Light" Height="53" VerticalAlignment="Center"/>
                 <Button Content="Log in" Margin="150,330,0,0" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" HorizontalAlignment="Center" Width="90" Height="31" VerticalAlignment="Center"/>
@@ -128,16 +128,46 @@
             <Grid x:Name="Signup" Margin="121,0" Width="550" HorizontalAlignment="Center">
                 <Label Content="Sign up" HorizontalAlignment="Center" Margin="0,0,0,290" FontSize="32" FontFamily="Segoe UI Light" Height="53" VerticalAlignment="Center"/>
                 <Button Content="Sign up" Margin="150,330,0,0" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" HorizontalAlignment="Center" Width="90" Height="31" VerticalAlignment="Center"/>
-                <TextBox x:Name="Login_username1" HorizontalAlignment="Center" Height="30" Margin="0,0,0,87" TextWrapping="Wrap" VerticalAlignment="Center" Width="240" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2"/>
-                <PasswordBox x:Name="Login_pass1" HorizontalAlignment="Center" Height="30" Margin="0,37,0,0" VerticalAlignment="Center" Width="240" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2" />
-                <Label Content="Login" HorizontalAlignment="Center" Margin="0,0,142,145" VerticalAlignment="Center" Height="40" Width="108" FontSize="20" FontFamily="Segoe UI Light"/>
-                <Label Content="Password" HorizontalAlignment="Center" Margin="0,0,142,17" VerticalAlignment="Center" Height="40" Width="108" FontSize="20" FontFamily="Segoe UI Light"/>
-                <PasswordBox x:Name="Login_pass1_Copy" HorizontalAlignment="Center" Height="30" Margin="0,161,0,0" VerticalAlignment="Center" Width="240" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2" />
-                <Label Content="Confirm password" HorizontalAlignment="Center" Margin="0,107,70,0" VerticalAlignment="Center" Height="40" Width="180" FontSize="20" FontFamily="Segoe UI Light"/>
+                <ScrollViewer VerticalAlignment="Center" HorizontalAlignment="Center" Height="205" Margin="0" FontSize="16" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" Foreground="{x:Null}" CanContentScroll="True">
+                    <Border Padding="5">
+                        <StackPanel>
+                            <Grid Height="65">
+                                <Label Content="Login" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Height="40" Width="180" FontSize="20" FontFamily="Segoe UI Light"/>
+                                <TextBox x:Name="Signup_username" Height="30" Margin="0,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2"/>
+                            </Grid>
+                            <Grid Height="65">
+                                <Label Content="Password" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Height="40" Width="180" FontSize="20" FontFamily="Segoe UI Light"/>
+                                <PasswordBox x:Name="Signup_pass" Height="30" Margin="0,35,0,0" VerticalAlignment="Top" Width="240" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2" />
+                            </Grid>
+                            <Grid Height="65">
+                                <Label Content="Confirm password" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Height="40" Width="180" FontSize="20" FontFamily="Segoe UI Light"/>
+                                <PasswordBox x:Name="Signup_pass_confirm" Height="30" Margin="0,35,0,0" VerticalAlignment="Top" Width="240" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2" />
+                            </Grid>
+                            <Grid Height="65">
+                                <Label Content="First name" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Height="40" Width="180" FontSize="20" FontFamily="Segoe UI Light"/>
+                                <TextBox x:Name="Signup_firstname" Height="30" Margin="0,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2"/>
+                            </Grid>
+                            <Grid Height="65">
+                                <Label Content="Last name" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Height="40" Width="180" FontSize="20" FontFamily="Segoe UI Light"/>
+                                <TextBox x:Name="Signup_lastname" Height="30" Margin="0,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2"/>
+                            </Grid>
+                            <Grid Height="65">
+                                <Label Content="Date of birth" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" Height="40" Width="180" FontSize="20" FontFamily="Segoe UI Light"/>
+                                <DatePicker x:Name="Signup_bdate" Height="30" Margin="0,35,0,0" VerticalAlignment="Top" Width="240" FontSize="20" FontFamily="Segoe UI Light" />
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </ScrollViewer>
             </Grid>
 
-            <Button Content="Back" HorizontalAlignment="Center" Margin="0,330,151,0" Width="81" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" Height="31" VerticalAlignment="Center"/>
+            <Button Content="Back" HorizontalAlignment="Center" Margin="0,330,159,0" Width="81" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" Height="31" VerticalAlignment="Center"/>
             <Label x:Name="Login_Signup_response" Content="" HorizontalAlignment="Center" Margin="0,252,0,0" VerticalAlignment="Center" FontFamily="Segoe UI Light" FontSize="20" Width="240" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        </Grid>
+        <Grid x:Name="ProfilePanel">
+            
+        </Grid>
+        <Grid x:Name="BookPanel">
+            
         </Grid>
     </Grid>
 </Window>
