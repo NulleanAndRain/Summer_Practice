@@ -163,7 +163,7 @@
             <Button Content="Back" HorizontalAlignment="Center" Margin="0,330,159,0" Width="81" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" Height="31" VerticalAlignment="Center"/>
             <Label x:Name="Login_Signup_response" Content="" HorizontalAlignment="Center" Margin="0,252,0,0" VerticalAlignment="Center" FontFamily="Segoe UI Light" FontSize="20" Width="240" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         </Grid>
-        <Grid x:Name="ProfilePanel" Background="#FFEAE4EE">
+        <Grid x:Name="ProfilePanel" Background="#FFEAE4EE" Visibility="Hidden">
             <Grid HorizontalAlignment="Center" Height="150" Margin="0,0,460,231" VerticalAlignment="Center" Width="150" Background="White">
                 <Image x:Name="Profile_ProfilePic" Source="Img/profile.png"/>
             </Grid>
@@ -195,8 +195,19 @@
             <Button Content="Select new picture" HorizontalAlignment="Center" Margin="0,0,460,41" VerticalAlignment="Center" Width="140" FontFamily="Segoe UI Light" FontSize="16" Height="30" Background="White" Visibility="Hidden"/>
 
         </Grid>
-        <Grid x:Name="BookPanel" Visibility="Hidden">
-
+        <Grid x:Name="ConfirmPassPanel" Background="#FFEAE4EE">
+            <Label Content="Confirm action" HorizontalAlignment="Center" Margin="0,0,0,255" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" FontSize="24"/>
+            <Label x:Name="ConfirmPass_response" Content="" HorizontalAlignment="Center" Margin="0,0,0,182" VerticalAlignment="Center" FontSize="16" Background="{x:Null}" Foreground="Red" Padding="5" UseLayoutRounding="False"/>
+            <Grid HorizontalAlignment="Center" Height="66" Margin="0,0,0,83" VerticalAlignment="Center" Width="250">
+                <PasswordBox x:Name="ConfirmPass_passInput" Height="30" Margin="0,0,0,1" VerticalAlignment="Bottom" FontFamily="Segoe UI Light" FontSize="20"/>
+                <Label Content="Password" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" FontSize="16" FontFamily="Segoe UI Light"/>
+            </Grid>
+            <Grid HorizontalAlignment="Center" Height="66" Margin="0,59,0,0" VerticalAlignment="Center" Width="250">
+                <PasswordBox x:Name="ConfirmPass_passInputRepeat" Height="30" Margin="0,0,0,1" VerticalAlignment="Bottom" FontFamily="Segoe UI Light" FontSize="20"/>
+                <Label Content="Confirm password" HorizontalAlignment="Left" VerticalAlignment="Top" Height="36" FontSize="16" FontFamily="Segoe UI Light"/>
+            </Grid>
+            <Button Content="Back" Margin="0,308,160,0" VerticalAlignment="Center" Height="30" FontSize="16" FontFamily="Segoe UI Light" Background="White" HorizontalAlignment="Center" Width="90"/>
+            <Button Content="Confirm" HorizontalAlignment="Center" Margin="160,308,0,0" VerticalAlignment="Center" Width="90" Height="30" FontSize="16" FontFamily="Segoe UI Light" Background="White"/>
         </Grid>
     </Grid>
 </Window>
