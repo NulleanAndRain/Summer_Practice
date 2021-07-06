@@ -7,45 +7,41 @@
         mc:Ignorable="d"
         Title="Library" Height="450" Width="800" MinHeight="450" MinWidth="700">
     <Grid>
-        <Grid x:Name="MainPanel" Visibility="Hidden">
+        <Grid x:Name="MainPanel">
             <Grid x:Name="Header" Height="70" VerticalAlignment="Top" Background="#FFEAE4EE">
-                <Grid x:Name="HeaderUnlogged" Margin="532,10,10,10">
-                    <Button Content="Sign Up" Margin="165,10,10,10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-                    <Button Content="Log In" Margin="85,10,0,10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Width="75"/>
+                <Grid x:Name="HeaderUnlogged" Margin="0" HorizontalAlignment="Right" Width="260" Visibility="Hidden">
+                    <Button Content="Sign Up" Margin="165,10,10,10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Button Content="Log In" Margin="85,15,95,15" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80"/>
                 </Grid>
-                <Grid x:Name="HeaderLogged" Margin="532,10,10,10" Visibility="Hidden">
-                    <Image HorizontalAlignment="Left" Width="50" Source="Img/profile.png"/>
+                <Grid x:Name="HeaderLogged" Margin="0" HorizontalAlignment="Right" Width="260">
+                    <Image HorizontalAlignment="Left" Width="50" Source="Img/profile.png" Height="50"/>
                     <Grid Margin="50,0,0,0">
-                        <Label Content="User Name" Margin="10,0,10,10" FontSize="20" FontFamily="Segoe UI Light"/>
-                        <Button Content="Edit Profile" Margin="10,30,0,0" VerticalAlignment="Top" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF311A6C" FontFamily="Segoe UI Light" HorizontalAlignment="Left" Width="75"/>
-                        <Button Content="Log Out" Margin="0,30,10,0" VerticalAlignment="Top" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF311A6C" FontFamily="Segoe UI Light" HorizontalAlignment="Right" Width="75"/>
+                        <Label Content="User Name" Margin="10,0,0,20" FontSize="20" FontFamily="Segoe UI Light" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                        <Button Content="Edit Profile" Margin="10,30,0,0" VerticalAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF311A6C" FontFamily="Segoe UI Light" HorizontalAlignment="Left" Width="75"/>
+                        <Button Content="Log Out" Margin="0,30,30,0" VerticalAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF311A6C" FontFamily="Segoe UI Light" HorizontalAlignment="Right" Width="75"/>
                     </Grid>
                 </Grid>
-                <Grid x:Name="HeaderControls" Margin="0,0,265,0">
-                    <Grid x:Name="Search" Margin="265,0,0,0">
-                        <TextBox x:Name="SearchInput" HorizontalAlignment="Left" Margin="10,20,0,18" TextWrapping="Wrap" Text="TextBox" Width="205" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2"/>
-                        <Button Margin="220,20,10,18" Background="White" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                <Grid x:Name="HeaderControls" Margin="0">
+                    <Grid x:Name="Search" Margin="255,0" MaxWidth="450">
+                        <TextBox x:Name="SearchInput" Margin="10,0,47,0" TextWrapping="Wrap" Text="Search" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                        <Button Margin="0,0,10,0" Background="White" Foreground="{x:Null}" Height="32" VerticalAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Width="32">
                             <Image Height="22" Width="22" Source="Img/magnifier.png"/>
                         </Button>
                     </Grid>
-                    <Grid x:Name="PageSelect" Margin="0,0,267,0">
-                        <Button Content="" Margin="10,20,0,18" BorderBrush="{x:Null}" HorizontalAlignment="Left" Width="32" Foreground="{x:Null}">
-                            <Button.Background>
-                                <ImageBrush ImageSource="Img/arrowLeft.png"/>
-                            </Button.Background>
+                    <Grid x:Name="PageSelect" HorizontalAlignment="Left" Width="260">
+                        <Button Margin="-208,0,0,0" BorderBrush="{x:Null}" HorizontalAlignment="Center" Width="32" Foreground="{x:Null}" Background="{x:Null}" VerticalAlignment="Center" Height="32">
+                            <Image Source="Img/arrowLeft.png"/>
                         </Button>
-                        <Button Content="" Margin="0,20,10,18" BorderBrush="{x:Null}" HorizontalAlignment="Right" Width="32" Foreground="{x:Null}">
-                            <Button.Background>
-                                <ImageBrush ImageSource="Img/arrowRight.png"/>
-                            </Button.Background>
+                        <Button Margin="0,0,-208,0" BorderBrush="{x:Null}" HorizontalAlignment="Center" Width="32" Foreground="{x:Null}" Background="{x:Null}" Height="32" VerticalAlignment="Center">
+                            <Image Source="Img/arrowRight.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
-                        <TextBox x:Name="PageSelectInput" Margin="47,23,118,21" TextWrapping="Wrap" Text="TextBox" BorderBrush="{x:Null}" SelectionBrush="#FF8D66A2" FontFamily="Segoe UI Light" FontSize="16" TextAlignment="Right"/>
-                        <Label Content="/ 1" Margin="138,19,47,19" FontFamily="Segoe UI Light" FontSize="16" Background="{x:Null}"/>
+                        <TextBox x:Name="PageSelectInput" Margin="-71,0,0,-2" TextWrapping="Wrap" Text="1" BorderBrush="{x:Null}" SelectionBrush="#FF8D66A2" FontFamily="Segoe UI Light" FontSize="16" TextAlignment="Right" Width="95" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,0,2,0" VerticalContentAlignment="Center"/>
+                        <Label Content="/ 1" Margin="0,0,-91,-2" FontFamily="Segoe UI Light" FontSize="16" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" VerticalContentAlignment="Center"/>
 
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid x:Name="BooksGrid" Margin="35,75,35,35" Background="{x:Null}">
+            <Grid x:Name="BooksGrid" Margin="35,75,35,35" Background="{x:Null}" Visibility="Hidden">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -114,6 +110,20 @@
                         </Button>
                     </Grid>
                 </Grid>
+            </Grid>
+            <Grid x:Name="BookView" Margin="0,70,0,0">
+                <Grid Margin="-522,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="300" Width="250" >
+                    <Image Margin="0" Width="250" Source="Img/book.png" Height="300"/>
+                </Grid>
+                <Grid Height="329" Margin="0,0,-255,0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="517">
+                    <Label x:Name="BookView_bookName" Content="Book Name" HorizontalAlignment="Left" Margin="0,46,0,237" VerticalAlignment="Center" FontSize="32" FontFamily="Segoe UI Light" Height="46" Width="195"/>
+                    <Label x:Name="BookView_year" Content="Year of publishing" HorizontalAlignment="Left" Margin="0,92,0,211" VerticalAlignment="Center" FontFamily="Segoe UI Light"/>
+                    <Label x:Name="BookView_authors" Content="Authors" HorizontalAlignment="Left" Margin="0,118,0,180" VerticalAlignment="Center" FontFamily="Segoe UI Light" FontSize="16"/>
+                    <Button Content="Edit" HorizontalAlignment="Left" Margin="10,179,0,0" VerticalAlignment="Top" Width="75" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C"/>
+                    <Button Content="Load" HorizontalAlignment="Left" Margin="10,215,0,0" VerticalAlignment="Top" Width="75" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C"/>
+                    <Button Content="Delete" HorizontalAlignment="Left" Margin="10,251,0,0" VerticalAlignment="Top" Width="75" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C"/>
+                </Grid>
+
             </Grid>
         </Grid>
         <Grid x:Name="LoginSignupPanel" Background="#FFEAE4EE" Visibility="Hidden">
@@ -195,7 +205,7 @@
             <Button Content="Select new picture" HorizontalAlignment="Center" Margin="0,0,460,41" VerticalAlignment="Center" Width="140" FontFamily="Segoe UI Light" FontSize="16" Height="30" Background="White" Visibility="Hidden"/>
 
         </Grid>
-        <Grid x:Name="ConfirmPassPanel" Background="#FFEAE4EE">
+        <Grid x:Name="ConfirmPassPanel" Background="#FFEAE4EE" Visibility="Hidden">
             <Label Content="Confirm action" HorizontalAlignment="Center" Margin="0,0,0,255" VerticalAlignment="Center" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" FontSize="24"/>
             <Label x:Name="ConfirmPass_response" Content="" HorizontalAlignment="Center" Margin="0,0,0,182" VerticalAlignment="Center" FontSize="16" Background="{x:Null}" Foreground="Red" Padding="5" UseLayoutRounding="False"/>
             <Grid HorizontalAlignment="Center" Height="66" Margin="0,0,0,83" VerticalAlignment="Center" Width="250">
