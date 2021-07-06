@@ -2,11 +2,6 @@
 using Library.DAL.Interface;
 using LibraryBLL;
 using LibraryDAL;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Library.DependencyResolver {
 	public class DependencyResolver {
