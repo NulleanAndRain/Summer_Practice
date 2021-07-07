@@ -6,29 +6,23 @@
         xmlns:local="clr-namespace:LibraryPL"
         mc:Ignorable="d"
         Title="Library" Height="450" Width="800" MinHeight="450" MinWidth="700" Icon="Img/bookWhiteBG.png">
+    <Window.Resources>
+    </Window.Resources>
     <Grid>
-        <Grid x:Name="Templates" Visibility="Hidden">
-            <Grid x:Name="_BookTemplate" Margin="10">
-                <Image Margin="10,0" Height="80" VerticalAlignment="Top" Source="Img/book.png"/>
-                <Label x:Name="_book_name" Content="Book name" HorizontalContentAlignment="Center" Margin="0,0,0,28" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="28"/>
-                <Label x:Name="_book_authors" Content="Book authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="35"/>
-                <Button Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Padding="0" />
-            </Grid>
-            <Grid x:Name="AddBookTemplate" Margin="10">
-                <Button Content="" Margin="0,-44,0,0" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="90" Width="90">
-                    <Button.Background>
-                        <ImageBrush ImageSource="Img/add.png" Stretch="Uniform"/>
-                    </Button.Background>
+        <Grid x:Name="Hidden">
+            <Grid x:Name="_AddBook" Margin="10">
+                <Button x:Name="AddBookBtn" Margin="0,-44,0,0" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="94" Width="94" Background="{x:Null}">
+                    <Image Source="Img/add.png"/>
                 </Button>
             </Grid>
         </Grid>
         <Grid x:Name="MainPanel">
             <Grid x:Name="Header" Height="70" VerticalAlignment="Top" Background="#FFEAE4EE">
-                <Grid x:Name="HeaderUnlogged" Margin="0" HorizontalAlignment="Right" Width="260" Visibility="Hidden">
-                    <Button Content="Sign Up" Margin="165,10,10,10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    <Button Content="Log In" Margin="85,15,95,15" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80"/>
+                <Grid x:Name="HeaderUnlogged" Margin="0" HorizontalAlignment="Right" Width="260">
+                    <Button Content="Sign Up" Margin="165,10,10,10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SigbUpBtn"/>
+                    <Button Content="Log In" Margin="85,15,95,15" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Click="BtnLogIn"/>
                 </Grid>
-                <Grid x:Name="HeaderLogged" Margin="0" HorizontalAlignment="Right" Width="260">
+                <Grid x:Name="HeaderLogged" Margin="0" HorizontalAlignment="Right" Width="260" Visibility="Hidden">
                     <Image x:Name="Header_user_pic" HorizontalAlignment="Left" Width="50" Source="Img/profile.png" Height="50"/>
                     <Grid Margin="50,0,0,0">
                         <Label x:Name="Header_user_name" Content="User Name" Margin="10,0,0,20" FontSize="20" FontFamily="Segoe UI Light" VerticalAlignment="Center" HorizontalAlignment="Left"/>
@@ -38,7 +32,7 @@
                 </Grid>
                 <Grid x:Name="HeaderControls" Margin="0">
                     <Grid x:Name="Search" Margin="255,0" MaxWidth="450">
-                        <TextBox x:Name="SearchInput" Margin="10,0,47,0" TextWrapping="Wrap" Text="Search" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="SearchInput" Margin="10,0,47,0" MaxLines="1" TextWrapping="NoWrap" Text="Search" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
                         <Button Margin="0,0,10,0" Background="White" Foreground="{x:Null}" Height="32" VerticalAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Width="32">
                             <Image Height="22" Width="22" Source="Img/magnifier.png"/>
                         </Button>
@@ -50,7 +44,7 @@
                         <Button Margin="0,0,-208,0" BorderBrush="{x:Null}" HorizontalAlignment="Center" Width="32" Foreground="{x:Null}" Background="{x:Null}" Height="32" VerticalAlignment="Center">
                             <Image Source="Img/arrowRight.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
-                        <TextBox x:Name="PageSelectInput" Margin="-71,0,0,-2" TextWrapping="Wrap" Text="1" BorderBrush="{x:Null}" SelectionBrush="#FF8D66A2" FontFamily="Segoe UI Light" FontSize="16" TextAlignment="Right" Width="95" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,0,2,0" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="PageSelectInput" Margin="-71,0,0,-2" TextWrapping="NoWrap" Text="1" BorderBrush="{x:Null}" SelectionBrush="#FF8D66A2" FontFamily="Segoe UI Light" FontSize="16" TextAlignment="Right" Width="95" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,0,2,0" VerticalContentAlignment="Center"/>
                         <Label Content="/ 1" Margin="0,0,-91,-2" FontFamily="Segoe UI Light" FontSize="16" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" VerticalContentAlignment="Center"/>
 
                     </Grid>
@@ -83,7 +77,7 @@
 
                 <Grid x:Name="Book_1_3" Grid.Row="1" Grid.Column="3" />
             </Grid>
-            <Grid x:Name="BookView" Margin="0,70,0,0">
+            <Grid x:Name="BookView" Margin="0,70,0,0" Visibility="Hidden">
                 <Grid Margin="-522,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="300" Width="250" >
                     <Image x:Name="BookView_Pic" Margin="0" Width="250" Source="Img/book.png" Height="300"/>
                 </Grid>

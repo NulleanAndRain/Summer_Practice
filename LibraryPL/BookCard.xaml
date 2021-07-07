@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="LibraryPL.BookCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LibraryPL"
+             mc:Ignorable="d" 
+             d:DesignHeight="155" d:DesignWidth="181">
+    <Grid Margin="10">
+        <Image x:Name="_img" Margin="0,10,0,45" Source="Img/book.png"/>
+        <Label x:Name="_book_name" HorizontalContentAlignment="Center" Margin="0,0,0,22" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="31" Background="{x:Null}" Content="Book name"/>
+        <Label x:Name="_book_authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="30" Background="{x:Null}" Content="Authors"/>
+        <Button x:Name="_btn" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Padding="0" Click="_btn_Click" />
+    </Grid>
+</UserControl>

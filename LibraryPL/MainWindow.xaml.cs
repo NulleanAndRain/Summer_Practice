@@ -42,7 +42,7 @@ namespace LibraryPL {
 
 		public MainWindow() {
 			InitializeComponent();
-			Templates.Visibility = Visibility.Hidden;
+			Hidden.Visibility = Visibility.Hidden;
 			SetupCollections();
 			OpenBooksPanel();
 		}
@@ -102,6 +102,7 @@ namespace LibraryPL {
 					p.Visibility = Visibility.Hidden;
 				}
 			}
+			//AddBook.
 		}
 
 		void SetBackBtn(Action action) {
@@ -132,14 +133,35 @@ namespace LibraryPL {
 		}
 
 		void ClearBooksGrid() {
+			Hidden.Children.Add(AddBookElem);
 			foreach (var cell in BooksGridCells) {
 				cell.Children.Clear();
 			}
 		}
 
+		Grid AddBookElem { get {
+				var p = (Grid)_AddBook.Parent;
+				p.Children.Remove(_AddBook);
+				return _AddBook;
+			} }
+
 		void ShowCurrenPage() {
 			ClearBooksGrid();
 			//todo: books page showing
+			BooksGrid.Visibility = Visibility.Visible;
+
+			BooksGridCells[3].Children.Add(AddBookElem);
+		}
+
+		BookCard CreateBookCard(Book book = null) {
+			var card = new BookCard();
+			card.BookName = "1984";
+			card.Authors = "Orwell";
+			void a() {
+				SearchInput.Text = "123";
+			}
+			card.OnCLick += a;
+			return card;
 		}
 
 		void OpenBookView(Book book) {
@@ -161,8 +183,21 @@ namespace LibraryPL {
 			}
 			SetBackBtn(() => OpenBookEdit(book, false));
 		}
+
+		void SearchBooks() {
+
+		}
 		#endregion
 
 		#endregion
+
+		private void BtnLogIn(object sender, RoutedEventArgs e) {
+			BooksGridCells[0].Children.Add(CreateBookCard());
+		}
+
+		private void SigbUpBtn(object sender, RoutedEventArgs e) {
+			ClearBooksGrid();
+			ShowCurrenPage();
+		}
 	}
 }
