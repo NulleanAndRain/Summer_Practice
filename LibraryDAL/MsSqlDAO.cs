@@ -83,8 +83,8 @@ namespace LibraryDAL {
 			for (int i = 0; i < authors.Length; i++) {
 				var author = authors[i];
 				var paramName = $"@a{i}";
-				querry.Append('%').Append(paramName).Append('%');
-				_params.Add(new SqlParameter(paramName, author));
+				querry.Append(paramName);
+				_params.Add(new SqlParameter(paramName, $"%{author}%"));
 				if (i != authors.Length - 1) {
 					querry.Append("AND LIKE ");
 				}
@@ -93,8 +93,8 @@ namespace LibraryDAL {
 		}
 
 		public List<Book> GetBooksWithName(string name) {
-			var querry = "SELECT * FROM Books WHERE BookName LIKE %@n%";
-			var p = new List<SqlParameter> { new SqlParameter("@n", name) };
+			var querry = "SELECT * FROM Books WHERE BookName LIKE @n";
+			var p = new List<SqlParameter> { new SqlParameter("@n", $"%{name}%") };
 			return getBooksWithQuerry(querry, p);
 		}
 

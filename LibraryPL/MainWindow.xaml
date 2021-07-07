@@ -32,21 +32,20 @@
                 </Grid>
                 <Grid x:Name="HeaderControls" Margin="0">
                     <Grid x:Name="Search" Margin="255,0" MaxWidth="450">
-                        <TextBox x:Name="SearchInput" Margin="10,0,47,0" MaxLines="1" TextWrapping="NoWrap" Text="Search" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center"/>
-                        <Button Margin="0,0,10,0" Background="White" Foreground="{x:Null}" Height="32" VerticalAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Width="32">
+                        <TextBox x:Name="SearchInput" Margin="10,0,47,0" MaxLines="1" TextWrapping="NoWrap" Text="Search" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2" Height="32" VerticalAlignment="Center" VerticalContentAlignment="Center" KeyDown="SearchKeyDown"/>
+                        <Button Margin="0,0,10,0" Background="White" Foreground="{x:Null}" Height="32" VerticalAlignment="Center" HorizontalContentAlignment="Center" HorizontalAlignment="Right" Width="32" Click="BtnSearch">
                             <Image Height="22" Width="22" Source="Img/magnifier.png"/>
                         </Button>
                     </Grid>
                     <Grid x:Name="PageSelect" HorizontalAlignment="Left" Width="260">
-                        <Button Margin="-208,0,0,0" BorderBrush="{x:Null}" HorizontalAlignment="Center" Width="32" Foreground="{x:Null}" Background="#00000000" VerticalAlignment="Center" Height="32">
+                        <Button Margin="-208,0,0,0" BorderBrush="{x:Null}" HorizontalAlignment="Center" Width="32" Foreground="{x:Null}" Background="#00000000" VerticalAlignment="Center" Height="32" Click="BtnPrevPage">
                             <Image Source="Img/arrowLeft.png"/>
                         </Button>
-                        <Button Margin="0,0,-208,0" BorderBrush="{x:Null}" HorizontalAlignment="Center" Width="32" Foreground="{x:Null}" Background="#00000000" Height="32" VerticalAlignment="Center">
+                        <Button Margin="0,0,-208,0" BorderBrush="{x:Null}" HorizontalAlignment="Center" Width="32" Foreground="{x:Null}" Background="#00000000" Height="32" VerticalAlignment="Center" Click="BtnNextPage">
                             <Image Source="Img/arrowRight.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
-                        <TextBox x:Name="PageSelectInput" Margin="-71,0,0,-2" TextWrapping="NoWrap" Text="1" BorderBrush="{x:Null}" SelectionBrush="#FF8D66A2" FontFamily="Segoe UI Light" FontSize="16" TextAlignment="Right" Width="95" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,0,2,0" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="PageSelectInput" Margin="-71,0,0,-2" TextWrapping="NoWrap" Text="1" BorderBrush="{x:Null}" SelectionBrush="#FF8D66A2" FontFamily="Segoe UI Light" FontSize="16" TextAlignment="Right" Width="95" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,0,2,0" VerticalContentAlignment="Center" KeyDown="PageSelectKeyDown"/>
                         <Label x:Name="PageSelect_PageCount" Content="/ 1" Margin="0,0,-91,-2" FontFamily="Segoe UI Light" FontSize="16" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" VerticalContentAlignment="Center"/>
-
                     </Grid>
                 </Grid>
             </Grid>

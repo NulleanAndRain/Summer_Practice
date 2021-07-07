@@ -176,12 +176,14 @@ namespace LibraryPL {
 			if (useSearch && !string.IsNullOrEmpty(searchString)) {
 				var authors = searchString.Split(new char[] { ',', ' ' },
 					StringSplitOptions.RemoveEmptyEntries);
-				Books = (List<Book>)logic.GetBooksWithName(searchString)
-					.Concat(logic.GetBooksWithAuthors(authors));
+				var l1 = logic.GetBooksWithName(searchString);
+				var l2 = logic.GetBooksWithAuthors(authors);
+				Books.Clear();
+				Books.AddRange(l1);
+				Books.AddRange(l2);
 			} else {
 				Books = logic.GetBooks();
 			}
-			PageSelect_PageCount.Content = $"/ {maxPage + 1}";
 		}
 
 		void ShowCurrenPage() {
@@ -197,6 +199,7 @@ namespace LibraryPL {
 				var c = CreateBookCard(b);
 				BooksGridCells[i].Children.Add(c);
 			}
+			PageSelect_PageCount.Content = $"/ {maxPage + 1}";
 			BooksGrid.Visibility = Visibility.Visible;
 		}
 
@@ -288,9 +291,19 @@ namespace LibraryPL {
 			searchString = SearchInput.Text;
 			currentPage = 0;
 			GetBooks(true);
+			ShowCurrenPage();
 		}
 
-		int maxPage => Books != null ? (Books.Count + 1) / 8 : -1;
+		int maxPage {
+			get {
+				if (Books != null) {
+					var c = Books.Count;
+					if (user != null && user.Id != -1) c++;
+					return (c - 1) / 8;
+				}
+				return -1;
+			}
+		}
 
 		void OpenPage(int page) {
 			currentPage = page;
@@ -419,6 +432,14 @@ namespace LibraryPL {
 
 		#endregion
 
+		#region Profile
+
+		void OpenProfileEdit(bool clearForm) {
+
+		}
+
+		#endregion
+
 		#endregion
 
 		#region Button Actions
@@ -487,6 +508,36 @@ namespace LibraryPL {
 		Action onBookDelete = delegate { };
 		private void BookDeleteBtn(object sender, RoutedEventArgs e) {
 			onBookDelete();
+		}
+
+		private void BtnPrevPage(object sender, RoutedEventArgs e) {
+			OpenPage(--currentPage);
+		}
+
+		private void BtnNextPage(object sender, RoutedEventArgs e) {
+			OpenPage(++currentPage);
+		}
+
+		void PageSelectKeyDown(object s, KeyEventArgs e) {
+			if (e.Key == Key.Enter) {
+				Keyboard.ClearFocus();
+				if (int.TryParse(PageSelectInput.Text, out int page)) {
+					OpenPage(page - 1);
+				} else {
+					PageSelectInput.Text = (currentPage + 1).ToString();
+				}
+			}
+		}
+
+		void SearchKeyDown(object s, KeyEventArgs e) {
+			if (e.Key == Key.Enter) {
+				Keyboard.ClearFocus();
+				SearchBooks();
+			}
+		}
+
+		private void BtnSearch(object sender, RoutedEventArgs e) {
+			SearchBooks();
 		}
 	}
 	#endregion
