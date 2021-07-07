@@ -8,7 +8,7 @@ namespace Library.Entities {
 	public class Book {
 		public int Id;
 		public string Name;
-		public string Authosrs;
+		public string Authors;
 		public int YearOfPublishing;
 	}
 }

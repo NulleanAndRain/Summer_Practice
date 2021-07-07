@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Library.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,9 +22,15 @@ namespace LibraryPL {
 		public event Action OnCLick = delegate { };
 		public string BookName { get => _book_name.Content.ToString(); set => _book_name.Content = value; }
 		public string Authors { get => _book_authors.Content.ToString(); set => _book_authors.Content = value; }
+		// todo: add images
 
 		public BookCard() {
 			InitializeComponent();
+		}
+
+		public BookCard(Book book) : this() {
+			BookName = book.Name;
+			Authors = book.Authors;
 		}
 
 		private void _btn_Click(object sender, RoutedEventArgs e) {

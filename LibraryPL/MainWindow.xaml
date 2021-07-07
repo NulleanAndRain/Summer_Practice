@@ -9,25 +9,25 @@
     <Window.Resources>
     </Window.Resources>
     <Grid>
-        <Grid x:Name="Hidden">
+        <Grid x:Name="Hidden" Visibility="Hidden">
             <Grid x:Name="_AddBook" Margin="10">
-                <Button x:Name="AddBookBtn" Margin="0,-44,0,0" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="94" Width="94" Background="{x:Null}">
+                <Button Margin="0,-44,0,0" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="94" Width="94" Background="{x:Null}" Click="AddBookbtn">
                     <Image Source="Img/add.png"/>
                 </Button>
             </Grid>
         </Grid>
-        <Grid x:Name="MainPanel">
+        <Grid x:Name="MainPanel" Visibility="Hidden">
             <Grid x:Name="Header" Height="70" VerticalAlignment="Top" Background="#FFEAE4EE">
                 <Grid x:Name="HeaderUnlogged" Margin="0" HorizontalAlignment="Right" Width="260">
-                    <Button Content="Sign Up" Margin="165,10,10,10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SigbUpBtn"/>
-                    <Button Content="Log In" Margin="85,15,95,15" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Click="BtnLogIn"/>
+                    <Button Content="Sign Up" Margin="165,10,10,10" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center" Click="OpenSigbUpBtn"/>
+                    <Button Content="Log In" Margin="85,15,95,15" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Click="OpenLogInBtn"/>
                 </Grid>
-                <Grid x:Name="HeaderLogged" Margin="0" HorizontalAlignment="Right" Width="260" Visibility="Hidden">
-                    <Image x:Name="Header_user_pic" HorizontalAlignment="Left" Width="50" Source="Img/profile.png" Height="50"/>
+                <Grid x:Name="HeaderLogged" Margin="0" HorizontalAlignment="Right" Width="260">
+                    <Image x:Name="Header_user_pic" HorizontalAlignment="Left" Width="50" Source="Img/profile.png" Height="50" Stretch="UniformToFill"/>
                     <Grid Margin="50,0,0,0">
                         <Label x:Name="Header_user_name" Content="User Name" Margin="10,0,0,20" FontSize="20" FontFamily="Segoe UI Light" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                        <Button Content="Edit Profile" Margin="10,30,0,0" VerticalAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF311A6C" FontFamily="Segoe UI Light" HorizontalAlignment="Left" Width="75"/>
-                        <Button Content="Log Out" Margin="0,30,30,0" VerticalAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF311A6C" FontFamily="Segoe UI Light" HorizontalAlignment="Right" Width="75"/>
+                        <Button Content="Edit Profile" Margin="10,30,0,0" VerticalAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF311A6C" FontFamily="Segoe UI Light" HorizontalAlignment="Left" Width="75" Click="BtnEditProfile"/>
+                        <Button Content="Log Out" Margin="0,30,30,0" VerticalAlignment="Center" BorderBrush="{x:Null}" Background="{x:Null}" Foreground="#FF311A6C" FontFamily="Segoe UI Light" HorizontalAlignment="Right" Width="75" Click="BtnLogOut"/>
                     </Grid>
                 </Grid>
                 <Grid x:Name="HeaderControls" Margin="0">
@@ -45,7 +45,7 @@
                             <Image Source="Img/arrowRight.png" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Button>
                         <TextBox x:Name="PageSelectInput" Margin="-71,0,0,-2" TextWrapping="NoWrap" Text="1" BorderBrush="{x:Null}" SelectionBrush="#FF8D66A2" FontFamily="Segoe UI Light" FontSize="16" TextAlignment="Right" Width="95" Height="25" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,0,2,0" VerticalContentAlignment="Center"/>
-                        <Label Content="/ 1" Margin="0,0,-91,-2" FontFamily="Segoe UI Light" FontSize="16" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" VerticalContentAlignment="Center"/>
+                        <Label x:Name="PageSelect_PageCount" Content="/ 1" Margin="0,0,-91,-2" FontFamily="Segoe UI Light" FontSize="16" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" VerticalContentAlignment="Center"/>
 
                     </Grid>
                 </Grid>
@@ -108,18 +108,19 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Grid x:Name="LoginSignupPanel" Background="#FFEAE4EE" Visibility="Hidden">
-            <Grid x:Name="Login" Margin="221,0" Width="550" HorizontalAlignment="Center" Visibility="Hidden">
-                <Label Content="Log in" HorizontalAlignment="Center" Margin="0,0,0,290" FontSize="32" FontFamily="Segoe UI Light" Height="53" VerticalAlignment="Center"/>
-                <Button Content="Log in" Margin="150,330,0,0" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" HorizontalAlignment="Center" Width="90" Height="31" VerticalAlignment="Center"/>
+        <Grid x:Name="LoginSignupPanel" Background="#FFEAE4EE">
+            <Grid x:Name="Login" Margin="0" Width="550" HorizontalAlignment="Center" Visibility="Hidden">
+                <Label Content="Log in" HorizontalAlignment="Center" Margin="0,0,0,308" FontSize="32" FontFamily="Segoe UI Light" Height="53" VerticalAlignment="Center" Background="{x:Null}"/>
+                <Button Content="Log in" Margin="150,330,0,0" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" HorizontalAlignment="Center" Width="90" Height="31" VerticalAlignment="Center" Click="BtnLogIn"/>
                 <TextBox x:Name="Login_username" HorizontalAlignment="Center" Height="30" Margin="0,0,0,87" TextWrapping="Wrap" VerticalAlignment="Center" Width="240" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2"/>
                 <PasswordBox x:Name="Login_pass" HorizontalAlignment="Center" Height="30" Margin="0,37,0,0" VerticalAlignment="Center" Width="240" FontSize="20" FontFamily="Segoe UI Light" SelectionBrush="#FF8D66A2" />
                 <Label Content="Login" HorizontalAlignment="Center" Margin="0,0,142,145" VerticalAlignment="Center" Height="40" Width="108" FontSize="20" FontFamily="Segoe UI Light"/>
                 <Label Content="Password" HorizontalAlignment="Center" Margin="0,0,142,17" VerticalAlignment="Center" Height="40" Width="108" FontSize="20" FontFamily="Segoe UI Light"/>
+                <Button Content="Don't have an account? Click here to sign up" HorizontalAlignment="Center" Margin="0,0,0,230" VerticalAlignment="Center" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" Click="BtnSwitchToSignup"/>
             </Grid>
-            <Grid x:Name="Signup" Margin="121,0" Width="550" HorizontalAlignment="Center">
-                <Label Content="Sign up" HorizontalAlignment="Center" Margin="0,0,0,290" FontSize="32" FontFamily="Segoe UI Light" Height="53" VerticalAlignment="Center"/>
-                <Button Content="Sign up" Margin="150,330,0,0" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" HorizontalAlignment="Center" Width="90" Height="31" VerticalAlignment="Center"/>
+            <Grid x:Name="Signup" Margin="0" Width="550" HorizontalAlignment="Center">
+                <Label Content="Sign up" HorizontalAlignment="Center" Margin="0,0,0,308" FontSize="32" FontFamily="Segoe UI Light" Height="53" VerticalAlignment="Center" Background="{x:Null}"/>
+                <Button Content="Sign up" Margin="150,330,0,0" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" HorizontalAlignment="Center" Width="90" Height="31" VerticalAlignment="Center" Click="BtnSignUp"/>
                 <ScrollViewer VerticalAlignment="Center" HorizontalAlignment="Center" Height="205" Margin="0" FontSize="16" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" Foreground="{x:Null}" CanContentScroll="True">
                     <Border Padding="5">
                         <StackPanel>
@@ -150,10 +151,11 @@
                         </StackPanel>
                     </Border>
                 </ScrollViewer>
+                <Button Content="Have an account? Click here to log in" HorizontalAlignment="Center" Margin="0,0,0,230" VerticalAlignment="Center" Width="266" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" Click="BtnSwitchToLogin"/>
             </Grid>
 
-            <Button Content="Back" HorizontalAlignment="Center" Margin="0,330,159,0" Width="81" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" Height="31" VerticalAlignment="Center"/>
-            <Label x:Name="Login_Signup_response" Content="" HorizontalAlignment="Center" Margin="0,252,0,0" VerticalAlignment="Center" FontFamily="Segoe UI Light" FontSize="20" Width="240" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Button Content="Back" HorizontalAlignment="Center" Margin="0,330,159,0" Width="81" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" Height="31" VerticalAlignment="Center" Click="BtnBack"/>
+            <Label x:Name="Login_Signup_response" Content="" HorizontalAlignment="Center" Margin="0,252,0,0" VerticalAlignment="Center" FontFamily="Segoe UI Light" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="{x:Null}" Foreground="Red"/>
         </Grid>
         <Grid x:Name="ProfilePanel" Background="#FFEAE4EE" Visibility="Hidden">
             <Grid HorizontalAlignment="Center" Height="150" Margin="0,0,460,231" VerticalAlignment="Center" Width="150" Background="White">

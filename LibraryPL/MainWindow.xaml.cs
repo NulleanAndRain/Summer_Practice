@@ -1,8 +1,11 @@
-﻿using Library.Entities;
+﻿using Library.BLL.Interface;
+using Library.DependencyResolver;
+using Library.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,18 +33,21 @@ namespace LibraryPL {
 
 		Grid[][] _all;
 
+		//
+		ILogic logic;
 		List<Book> Books;
 		User user = null;
 		int currentPage;
 		string searchString = string.Empty;
 
-		event Action onBackButtonClickNext = delegate { };
-		event Action onBackButtonClick = delegate { };
+		Action BackBtnNext = delegate { };
+		Stack<Action> BackBtnActions = new Stack<Action>();
 
 		#region Initialisation
 
 		public MainWindow() {
 			InitializeComponent();
+			logic = DependencyResolver.Instance.GetLogicObject();
 			Hidden.Visibility = Visibility.Hidden;
 			SetupCollections();
 			OpenBooksPanel();
@@ -102,12 +108,25 @@ namespace LibraryPL {
 					p.Visibility = Visibility.Hidden;
 				}
 			}
-			//AddBook.
 		}
 
-		void SetBackBtn(Action action) {
-			onBackButtonClick = onBackButtonClickNext;
-			onBackButtonClickNext = action;
+		void SetBackBtn(Action action) { //todo: rework back button
+			if (BackBtnNext != null) {
+				BackBtnActions.Push(BackBtnNext);
+			}
+			BackBtnNext = action;
+		}
+
+		void ClearBackBtnStack() {
+			BackBtnNext = null;
+			BackBtnActions.Clear();
+		}
+
+		void Back() {
+			BackBtnNext = null;
+			if (BackBtnActions.Count > 0) {
+				BackBtnActions.Pop()();
+			}
 		}
 		#endregion
 
@@ -124,12 +143,18 @@ namespace LibraryPL {
 			}
 		}
 
-		void OpenBooksPanel() {
+		void OpenBooksPanel(bool updateBooks = true) {
 			OpenMainPanel();
 			HeaderControls.Visibility = Visibility.Visible;
 			SearchInput.Text = searchString;
-			ShowCurrenPage();
-			SetBackBtn(OpenBooksPanel);
+			if (updateBooks) {
+				GetBooks();
+				OpenPage(0);
+			} else {
+				ShowCurrenPage();
+			}
+
+			SetBackBtn(() => OpenBooksPanel(false));
 		}
 
 		void ClearBooksGrid() {
@@ -139,35 +164,55 @@ namespace LibraryPL {
 			}
 		}
 
-		Grid AddBookElem { get {
+		Grid AddBookElem {
+			get {
 				var p = (Grid)_AddBook.Parent;
 				p.Children.Remove(_AddBook);
 				return _AddBook;
-			} }
+			}
+		}
+
+		void GetBooks(bool useSearch = false) {
+			if (useSearch && !string.IsNullOrEmpty(searchString)) {
+				var authors = searchString.Split(new char[] { ',', ' ' },
+					StringSplitOptions.RemoveEmptyEntries);
+				Books = (List<Book>)logic.GetBooksWithName(searchString)
+					.Concat(logic.GetBooksWithAuthors(authors));
+			} else {
+				Books = logic.GetBooks();
+			}
+			PageSelect_PageCount.Content = $"/ {maxPage + 1}";
+		}
 
 		void ShowCurrenPage() {
 			ClearBooksGrid();
-			//todo: books page showing
+			for (int i = 0; i < 8; i++) {
+				if (currentPage * 8 + i >= Books.Count) {
+					if (user != null && user.Id != -1) {
+						BooksGridCells[i].Children.Add(AddBookElem);
+					}
+					break;
+				}
+				var b = Books[currentPage * 8 + i];
+				var c = CreateBookCard(b);
+				BooksGridCells[i].Children.Add(c);
+			}
 			BooksGrid.Visibility = Visibility.Visible;
-
-			BooksGridCells[3].Children.Add(AddBookElem);
 		}
 
 		BookCard CreateBookCard(Book book = null) {
-			var card = new BookCard();
-			card.BookName = "1984";
-			card.Authors = "Orwell";
-			void a() {
-				SearchInput.Text = "123";
+			var card = new BookCard(book);
+			void show() {
+				OpenBookView(book);
 			}
-			card.OnCLick += a;
+			card.OnCLick += show;
 			return card;
 		}
 
 		void OpenBookView(Book book) {
 			OpenMainPanel();
 			BookView_bookName.Content = book.Name;
-			BookView_authors.Content = book.Authosrs;
+			BookView_authors.Content = book.Authors;
 			BookView_year.Content = book.YearOfPublishing;
 			//BookView_Pic //todo: book cover images
 
@@ -178,26 +223,186 @@ namespace LibraryPL {
 			OpenMainPanel();
 			if (clearForm) {
 				BookEdit_BookName.Text = book.Name;
-				BookEdit_Authors.Text = book.Authosrs;
+				BookEdit_Authors.Text = book.Authors;
 				BookEdit_Year.Text = book.YearOfPublishing.ToString();
+				//todo: book cover images
 			}
 			SetBackBtn(() => OpenBookEdit(book, false));
 		}
 
 		void SearchBooks() {
-
-		}
-		#endregion
-
-		#endregion
-
-		private void BtnLogIn(object sender, RoutedEventArgs e) {
-			BooksGridCells[0].Children.Add(CreateBookCard());
+			searchString = SearchInput.Text;
+			currentPage = 0;
+			GetBooks(true);
 		}
 
-		private void SigbUpBtn(object sender, RoutedEventArgs e) {
-			ClearBooksGrid();
+		int maxPage => Books != null ? (Books.Count + 1) / 8 : -1;
+
+		void OpenPage(int page) {
+			currentPage = page;
+			if (currentPage < 0) currentPage = 0;
+			if (currentPage > maxPage) currentPage = maxPage;
+			PageSelectInput.Text = (currentPage + 1).ToString();
 			ShowCurrenPage();
 		}
+
+		void LogOut() {
+			logic.LogOut(user.Id);
+			user = null;
+			HeaderLogged.Visibility = Visibility.Hidden;
+			HeaderUnlogged.Visibility = Visibility.Visible;
+			ShowCurrenPage();
+		}
+
+		#endregion
+
+		#region Login Signup
+
+		void OpenLoginSignup() {
+			CloseAll();
+			Login_Signup_response.Content = string.Empty;
+			LoginSignupPanel.Visibility = Visibility.Visible;
+		}
+
+		void OpenLogin(bool clearForm = true) {
+			OpenLoginSignup();
+			if (clearForm) {
+				Login_username.Text = string.Empty;
+				Login_pass.Password = string.Empty;
+				SetBackBtn(() => OpenLogin(false));
+			}
+			Login.Visibility = Visibility.Visible;
+		}
+
+		void LogIn() {
+			if (string.IsNullOrEmpty(Login_username.Text) ||
+				string.IsNullOrEmpty(Login_pass.Password)) {
+				Login_Signup_response.Content = "Enter all fields";
+				return;
+			}
+			void onSuccess(User u) {
+				user = u;
+				ClearBackBtnStack();
+				OpenBooksPanel();
+			}
+			void onReject(RejectData data) {
+				if (data.type != RejectType.Exeption) {
+					Login_Signup_response.Content = data.message;
+				}
+			}
+			logic.LogIn(Login_username.Text, Login_pass.Password, onSuccess, onReject);
+		}
+
+		void OpenSignup(bool clearForm = true) {
+			OpenLoginSignup();
+			if (clearForm) {
+				Signup_username.Text = string.Empty;
+				Signup_pass.Password = string.Empty;
+				Signup_pass_confirm.Password = string.Empty;
+				Signup_firstname.Text = string.Empty;
+				Signup_lastname.Text = string.Empty;
+				Signup_bdate.SelectedDate = DateTime.Now;
+				SetBackBtn(() => OpenSignup(false));
+			}
+			Signup.Visibility = Visibility.Visible;
+		}
+
+		void SignUp() {
+			if (string.IsNullOrEmpty(Signup_username.Text) ||
+				string.IsNullOrEmpty(Signup_firstname.Text) ||
+				string.IsNullOrEmpty(Signup_lastname.Text) ||
+				string.IsNullOrEmpty(Signup_pass.Password) ||
+				string.IsNullOrEmpty(Signup_pass_confirm.Password)) {
+				Login_Signup_response.Content = "Enter all fields";
+				return;
+			}
+			if (Signup_pass.Password != Signup_pass_confirm.Password) {
+				Login_Signup_response.Content = "Passwords do not match";
+				return;
+			}
+			var name_len = Signup_username.Text.Length;
+			if (name_len > 24 || name_len < 4) {
+				Login_Signup_response.Content = "Username length should be in range from 4 to 24";
+				return;
+			}
+
+			var regex = @"[^a-zA-Z0-9_.]";
+			if (Regex.Matches(Signup_username.Text, regex).Count > 0) {
+				Login_Signup_response.Content = "Username must consist of latin letters, numbers, dots and underscores";
+				return;
+			}
+
+			if (Signup_pass.Password.Length < 8) {
+				Login_Signup_response.Content = "Password should be at least 8 symbols long";
+				return;
+			}
+
+			void onSuccess(User u) {
+				user = u;
+				ClearBackBtnStack();
+				OpenBooksPanel();
+			}
+			void onReject(RejectData data) {
+				if (data.type != RejectType.Exeption) {
+					Login_Signup_response.Content = data.message;
+				}
+			}
+
+			User _u = new User {
+				Username = Signup_username.Text,
+				FirstName = Signup_firstname.Text,
+				LastName = Signup_lastname.Text,
+				DateOfBirth = Signup_bdate.SelectedDate.Value.Date
+			};
+			logic.CreateUser(_u, Signup_pass.Password, onSuccess, onReject);
+		}
+
+		#endregion
+
+		#endregion
+
+		#region Button Actions
+
+		private void BtnBack(object sender, RoutedEventArgs e) {
+			Back();
+		}
+
+
+		private void AddBookbtn(object sender, RoutedEventArgs e) {
+			OpenBookEdit(new Book());
+		}
+
+		private void OpenLogInBtn(object sender, RoutedEventArgs e) {
+			OpenLogin();
+		}
+
+		private void OpenSigbUpBtn(object sender, RoutedEventArgs e) {
+			OpenSignup();
+		}
+
+		private void BtnEditProfile(object sender, RoutedEventArgs e) {
+
+		}
+
+		private void BtnLogOut(object sender, RoutedEventArgs e) {
+			LogOut();
+		}
+
+
+		private void BtnSwitchToSignup(object sender, RoutedEventArgs e) {
+			OpenSignup(false);
+		}
+		private void BtnLogIn(object sender, RoutedEventArgs e) {
+			LogIn();
+		}
+
+
+		private void BtnSwitchToLogin(object sender, RoutedEventArgs e) {
+			OpenLogin(false);
+		}
+		private void BtnSignUp(object sender, RoutedEventArgs e) {
+			SignUp();
+		}
 	}
+	#endregion
 }

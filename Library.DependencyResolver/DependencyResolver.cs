@@ -9,7 +9,7 @@ namespace Library.DependencyResolver {
 
 		IDAO dao;
 		ILogic logic;
-		public IDAO GetDAO() => dao != null? dao : dao = new MsSqlDAO();
+		IDAO GetDAO() => dao != null? dao : dao = new MsSqlDAO();
 		public ILogic GetLogicObject() => logic != null? logic : logic = new Logic(GetDAO());
 	}
 }

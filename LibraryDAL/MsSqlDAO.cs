@@ -11,15 +11,13 @@ namespace LibraryDAL {
 	public class MsSqlDAO : IDAO, IDisposable {
 		#region Common
 
-		private string ConnString => $@"Data Source=(LocalDB)\MSSQLLocalDB;
-			AttachDbFilename={Environment.CurrentDirectory}\LibDatabase.mdf;
-			Integrated Security=True";
+		private string ConnString => $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\c#\LibraryApp\LibraryDAL\LibDatabase.mdf;Integrated Security=True";
 		private SqlConnection conn;
 
 		public MsSqlDAO() {
 			conn = new SqlConnection(ConnString);
 			conn.Open();
-			var cmd = new SqlCommand("sp_setapprole lib_app DFa[7wzaVA", conn);
+			var cmd = new SqlCommand("sp_setapprole 'lib_app', 'DFa[7wzaVA'", conn);
 			cmd.ExecuteNonQuery();
 		}
 
@@ -46,7 +44,7 @@ namespace LibraryDAL {
 							 VALUES (@n, @a, @y)";
 			var p = new List<SqlParameter> {
 				new SqlParameter("@n", book.Name),
-				new SqlParameter("@a", book.Authosrs),
+				new SqlParameter("@a", book.Authors),
 				new SqlParameter("@y", book.YearOfPublishing)
 			};
 			execNonQuerry(querry, p);
@@ -65,7 +63,7 @@ namespace LibraryDAL {
 					var book = new Book();
 					book.Id = reader.GetInt32(0);
 					book.Name = reader.GetString(1);
-					book.Authosrs = reader.GetString(2);
+					book.Authors = reader.GetString(2);
 					book.YearOfPublishing = reader.GetInt32(3);
 					books.Add(book);
 				}
@@ -108,7 +106,7 @@ namespace LibraryDAL {
 				WHERE ID = @id";
 			var p = new List<SqlParameter> {
 				new SqlParameter("@n", newData.Name),
-				new SqlParameter("@a", newData.Authosrs),
+				new SqlParameter("@a", newData.Authors),
 				new SqlParameter("@y", newData.YearOfPublishing),
 				new SqlParameter("@id", id)
 			};
