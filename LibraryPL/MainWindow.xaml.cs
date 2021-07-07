@@ -434,8 +434,27 @@ namespace LibraryPL {
 
 		#region Profile
 
-		void OpenProfileEdit(bool clearForm) {
+		void OpenProfileEdit(bool clearForm = true) {
+			CloseAll();
+			if (clearForm) {
+				Profile_UserName.Text = user.Username;
+				Profile_FirstName.Text = user.FirstName;
+				Profile_LastName.Text = user.LastName;
+				Profile_BDate.SelectedDate = user.DateOfBirth;
+				//todo: profile pic
+			}
+			void submit() {
+				//todo: submiting chamges
+			}
+			onProfileSubmit = submit;
 
+			void delete() {
+
+			}
+			onProfileDelete = delete;
+
+			ProfilePanel.Visibility = Visibility.Visible;
+			SetBackBtn(() => OpenProfileEdit(false));
 		}
 
 		#endregion
@@ -467,7 +486,7 @@ namespace LibraryPL {
 		}
 
 		private void BtnEditProfile(object sender, RoutedEventArgs e) {
-
+			OpenProfileEdit();
 		}
 
 		private void BtnLogOut(object sender, RoutedEventArgs e) {
@@ -538,6 +557,16 @@ namespace LibraryPL {
 
 		private void BtnSearch(object sender, RoutedEventArgs e) {
 			SearchBooks();
+		}
+
+		Action onProfileSubmit = delegate { };
+		private void BtnProfileSubmit(object sender, RoutedEventArgs e) {
+			onProfileSubmit();
+		}
+
+		Action onProfileDelete = delegate { };
+		private void BtnDeleteAcc(object sender, RoutedEventArgs e) {
+			onProfileDelete();
 		}
 	}
 	#endregion
