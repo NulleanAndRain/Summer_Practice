@@ -36,7 +36,7 @@ namespace LibraryPL {
 		//
 		ILogic logic;
 		List<Book> Books;
-		User user = null;
+		User user = new User();
 		int currentPage;
 		string searchString = string.Empty;
 
@@ -203,6 +203,7 @@ namespace LibraryPL {
 		BookCard CreateBookCard(Book book = null) {
 			var card = new BookCard(book);
 			void show() {
+				SearchInput.Text = "click";
 				OpenBookView(book);
 			}
 			card.OnCLick += show;
@@ -214,7 +215,31 @@ namespace LibraryPL {
 			BookView_bookName.Content = book.Name;
 			BookView_authors.Content = book.Authors;
 			BookView_year.Content = book.YearOfPublishing;
+			BookView_Response.Content = string.Empty;
 			//BookView_Pic //todo: book cover images
+			BookView.Visibility = Visibility.Visible;
+			void edit() {
+				OpenBookEdit(book, true);
+			}
+			onBookEdit = edit;
+
+			void load() {
+				//todo: book loading
+			}
+			onBookLoad = load;
+
+			void delete() {
+				void onSuccess(string _) {
+					OpenBooksPanel(true);
+				}
+
+				void onReject(RejectData data) {
+					BookView_Response.Content = data.message;
+				}
+
+				logic.DeleteBook(book.Id, user.Id, onSuccess, onReject);
+			}
+			onBookDelete = delete;
 
 			SetBackBtn(() => OpenBookView(book));
 		}
@@ -227,6 +252,35 @@ namespace LibraryPL {
 				BookEdit_Year.Text = book.YearOfPublishing.ToString();
 				//todo: book cover images
 			}
+			BookEdit_Response.Content = string.Empty;
+
+			void save() {
+				book.Name = BookEdit_BookName.Text;
+				book.Authors = BookEdit_Authors.Text;
+				if (int.TryParse(BookEdit_Year.Text, out int year)) {
+					book.YearOfPublishing = year;
+				} else {
+					BookEdit_Response.Content = "Year must be an integer number";
+					return;
+				}
+
+				void onSuccess(string _) {
+					GetBooks();
+					OpenBooksPanel(false);
+				}
+				void onReject(RejectData data) {
+					BookEdit_Response.Content = data.message;
+				}
+
+				if (book.Id == -1) {
+					logic.AddBook(book, user.Id, onSuccess, onReject);
+				} else {
+					logic.EditBook(book.Id, book, user.Id, onSuccess, onReject);
+				}
+			}
+			onBookSave = save;
+
+			BookEdit.Visibility = Visibility.Visible;
 			SetBackBtn(() => OpenBookEdit(book, false));
 		}
 
@@ -248,7 +302,7 @@ namespace LibraryPL {
 
 		void LogOut() {
 			logic.LogOut(user.Id);
-			user = null;
+			user = new User();
 			HeaderLogged.Visibility = Visibility.Hidden;
 			HeaderUnlogged.Visibility = Visibility.Visible;
 			ShowCurrenPage();
@@ -274,10 +328,17 @@ namespace LibraryPL {
 			Login.Visibility = Visibility.Visible;
 		}
 
+		static readonly Regex _username_regex = new Regex(@"[^a-zA-Z0-9_.]");
+		bool CheckUsername(string str) => _username_regex.IsMatch(str);
+
 		void LogIn() {
 			if (string.IsNullOrEmpty(Login_username.Text) ||
 				string.IsNullOrEmpty(Login_pass.Password)) {
 				Login_Signup_response.Content = "Enter all fields";
+				return;
+			}
+			if (CheckUsername(Login_username.Text)) {
+				Login_Signup_response.Content = "Incorrect username";
 				return;
 			}
 			void onSuccess(User u) {
@@ -326,8 +387,7 @@ namespace LibraryPL {
 				return;
 			}
 
-			var regex = @"[^a-zA-Z0-9_.]";
-			if (Regex.Matches(Signup_username.Text, regex).Count > 0) {
+			if (CheckUsername(Login_username.Text)) {
 				Login_Signup_response.Content = "Username must consist of latin letters, numbers, dots and underscores";
 				return;
 			}
@@ -372,6 +432,11 @@ namespace LibraryPL {
 			OpenBookEdit(new Book());
 		}
 
+		Action onBookSave = delegate { };
+		private void BtnSaveBook(object sender, RoutedEventArgs e) {
+			onBookSave();
+		}
+
 		private void OpenLogInBtn(object sender, RoutedEventArgs e) {
 			OpenLogin();
 		}
@@ -402,6 +467,26 @@ namespace LibraryPL {
 		}
 		private void BtnSignUp(object sender, RoutedEventArgs e) {
 			SignUp();
+		}
+
+		private void BtnSelectBookImg(object sender, RoutedEventArgs e) {
+
+		}
+
+
+		Action onBookLoad = delegate { };
+		private void LoadBookBtn(object sender, RoutedEventArgs e) {
+			onBookLoad();
+		}
+
+		Action onBookEdit = delegate { };
+		private void BookViewEditBtn(object sender, RoutedEventArgs e) {
+			onBookEdit();
+		}
+
+		Action onBookDelete = delegate { };
+		private void BookDeleteBtn(object sender, RoutedEventArgs e) {
+			onBookDelete();
 		}
 	}
 	#endregion

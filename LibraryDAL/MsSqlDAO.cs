@@ -100,9 +100,7 @@ namespace LibraryDAL {
 
 		public void EditBook(int id, Book newData) {
 			var querry = @"UPDATE Books
-				SET BookName = @n
-				SET Authors = @a
-				SET YearOfPublishing = @y
+				SET BookName = @n, Authors = @a, YearOfPublishing = @y
 				WHERE ID = @id";
 			var p = new List<SqlParameter> {
 				new SqlParameter("@n", newData.Name),
@@ -170,11 +168,8 @@ namespace LibraryDAL {
 
 		public void UpdateUser(int id, User newData) {
 			var querry = $@"UPDATE Users
-				SET Username = @u
-				SET PassHash = @p
-				SET FirstName = @fn
-				SET LastName = @ln
-				SET DateOfBirth = @d
+				SET Username = @u, PassHash = @pm
+				FirstName = @fn,LastName = @ln, DateOfBirth = @d
 				WHERE ID = @id";
 			var p = new List<SqlParameter> {
 				new SqlParameter("@u", newData.Username),

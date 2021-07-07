@@ -7,9 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="155" d:DesignWidth="181">
     <Grid Margin="10">
-        <Image x:Name="_img" Margin="0,10,0,45" Source="Img/book.png"/>
-        <Label x:Name="_book_name" HorizontalContentAlignment="Center" Margin="0,0,0,22" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="31" Background="{x:Null}" Content="Book name"/>
-        <Label x:Name="_book_authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="30" Background="{x:Null}" Content="Authors"/>
-        <Button x:Name="_btn" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Padding="0" Click="_btn_Click" />
+        <Button x:Name="_btn" Background="#00000000" BorderBrush="{x:Null}" Foreground="Black" Padding="0" Click="_btn_Click">
+            <Grid>
+                <Image x:Name="_img" Margin="0,10,0,45" Source="Img/book.png"/>
+                <Label x:Name="_book_name" HorizontalContentAlignment="Center" Margin="0,0,0,22" FontFamily="Segoe UI Light" FontSize="16" VerticalAlignment="Bottom" Height="31" Background="{x:Null}" Content="Book name"/>
+                <Label x:Name="_book_authors" HorizontalContentAlignment="Center" FontFamily="Segoe UI Light" VerticalAlignment="Bottom" Height="30" Background="{x:Null}" Content="Authors"/>
+            </Grid>
+        </Button>
     </Grid>
 </UserControl>

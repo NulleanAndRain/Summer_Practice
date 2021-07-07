@@ -34,7 +34,6 @@ namespace LibraryPL {
 		}
 
 		private void _btn_Click(object sender, RoutedEventArgs e) {
-			Console.WriteLine("btn click");
 			OnCLick();
 		}
 	}

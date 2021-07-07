@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Library.Entities {
 	public class Book {
-		public int Id;
+		public int Id = -1;
 		public string Name;
 		public string Authors;
 		public int YearOfPublishing;
