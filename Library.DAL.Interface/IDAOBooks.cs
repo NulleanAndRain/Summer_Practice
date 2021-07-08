@@ -1,5 +1,6 @@
 ﻿using Library.Entities;
 using System.Collections.Generic;
+using System.Windows.Media.Imaging;
 
 namespace Library.DAL.Interface {
 	public interface IDAOBooks {
@@ -9,5 +10,9 @@ namespace Library.DAL.Interface {
 		List<Book> GetBooksWithAuthors(string[] authors);
 		void EditBook(int id, Book newData);
 		void DeleteBook(int id);
+		void UpdateBookPicture(int id, BitmapImage img);
+		BitmapImage GetBookPicture(int id);
+		void UpdateBookFile(int id, byte[] file);
+		byte[] GetBookFile(int id);
 	}
 }

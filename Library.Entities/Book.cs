@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Media.Imaging;
 
 namespace Library.Entities {
 	public class Book {
@@ -10,5 +6,6 @@ namespace Library.Entities {
 		public string Name;
 		public string Authors;
 		public int YearOfPublishing;
+		public BitmapImage BookImage;
 	}
 }

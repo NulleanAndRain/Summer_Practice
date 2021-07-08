@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace LibraryDAL {
 	public class MsSqlDAOBooks : MsSqlDAOBase, IDAOBooks {
@@ -88,6 +89,36 @@ namespace LibraryDAL {
 			var querry = @"DELETE FROM Books WHERE ID = @id";
 			var p = new List<SqlParameter> { new SqlParameter("@id", id) };
 			execNonQuerry(querry, p);
+		}
+
+		public void UpdateBookPicture(int id, BitmapImage img) {
+			var querry = @"UPDATE Books SET PreviewImg = @img WHERE ID = @id";
+			var p = new List<SqlParameter> {
+				new SqlParameter("@img", ImgReader.GetBytes(img)),
+				new SqlParameter("@id", id)
+			};
+			execNonQuerry(querry, p);
+		}
+
+		public BitmapImage GetBookPicture(int id) {
+			var querry = @"SELECT PreviewImg FROM Books WHERE ID = @id";
+			var cmd = new SqlCommand(querry, conn);
+			cmd.Parameters.Add(new SqlParameter("@id", id));
+			using (var reader = cmd.ExecuteReader()) {
+				BitmapImage img = null;
+				if (reader.Read()) {
+					img = ImgReader.GetImage(reader.GetStream(0));
+				}
+				return img;
+			}
+		}
+
+		public void UpdateBookFile(int id, byte[] file) {
+			throw new NotImplementedException();
+		}
+
+		public byte[] GetBookFile(int id) {
+			throw new NotImplementedException();
 		}
 
 		#endregion

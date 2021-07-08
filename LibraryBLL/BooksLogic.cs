@@ -3,6 +3,7 @@ using Library.DAL.Interface;
 using Library.Entities;
 using System;
 using System.Collections.Generic;
+using System.Windows.Media.Imaging;
 
 namespace LibraryBLL {
 	public class BooksLogic : IBooksLogic {
@@ -58,6 +59,28 @@ namespace LibraryBLL {
 			}
 			dao.DeleteBook(id);
 			onSuccess("Book successfully deleted");
+		}
+
+		public BitmapImage GetBookImage(int id) {
+			return dao.GetBookPicture(id);
+		}
+
+		public void UpdateBookImage(int id, int userId, BitmapImage img, Action<BitmapImage> onSuccess, Action<RejectData> onReject) {
+			try {
+				if (!users.IsUserLoggedIn(userId)) rejectUnauthorised(onReject);
+				dao.UpdateBookPicture(id, img);
+				onSuccess(img);
+			} catch (Exception e) {
+				onReject(new RejectData(RejectType.Exeption, e.Message));
+			}
+		}
+
+		public byte[] GetBookFile(int id) {
+			throw new NotImplementedException();
+		}
+
+		public void UpdateBookFile(int id, int userId, byte[] file, Action<BitmapImage> onSuccess, Action<RejectData> onReject) {
+			throw new NotImplementedException();
 		}
 
 		#endregion

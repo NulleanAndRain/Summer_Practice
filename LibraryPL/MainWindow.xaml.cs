@@ -134,6 +134,16 @@ namespace LibraryPL {
 				BackBtnActions.Pop()();
 			}
 		}
+
+		BitmapImage GetUserImage() {
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.Filter = "Image|*.png;*.jpeg;*.jpg;*.gif";
+			dialog.Multiselect = false;
+			var res = dialog.ShowDialog();
+			if (res == null || !res.Value) return null;
+			return new BitmapImage(new Uri(dialog.FileName));
+		}
+
 		#endregion
 
 		#region BooksPanel
@@ -209,6 +219,9 @@ namespace LibraryPL {
 					break;
 				}
 				var b = Books[currentPage * 8 + i];
+				//if (b.BookImage == null) {
+					GetBookImage(b);
+				//}
 				var c = CreateBookCard(b);
 				BooksGridCells[i].Children.Add(c);
 			}
@@ -226,13 +239,23 @@ namespace LibraryPL {
 			return card;
 		}
 
+		void GetBookImage(Book book) {
+			var img = BooksLogic.GetBookImage(book.Id);
+			if (img == null) {
+				book.BookImage = _BookDefaultPic;
+			} else {
+				book.BookImage = img;
+			}
+		}
+
 		void OpenBookView(Book book) {
 			OpenMainPanel();
+			GetBookImage(book);
 			BookView_bookName.Content = book.Name;
 			BookView_authors.Content = book.Authors;
 			BookView_year.Content = book.YearOfPublishing;
 			BookView_Response.Content = string.Empty;
-			//BookView_Pic //todo: book cover images
+			BookView_Pic.Source = book.BookImage;
 			BookView.Visibility = Visibility.Visible;
 			void edit() {
 				OpenBookEdit(book, true);
@@ -271,10 +294,11 @@ namespace LibraryPL {
 		void OpenBookEdit(Book book, bool clearForm = true) {
 			OpenMainPanel();
 			if (clearForm) {
+				GetBookImage(book);
 				BookEdit_BookName.Text = book.Name;
 				BookEdit_Authors.Text = book.Authors;
 				BookEdit_Year.Text = book.YearOfPublishing.ToString();
-				//todo: book cover images
+				BookEdit_Pic.Source = book.BookImage;
 			}
 			BookEdit_Response.Content = string.Empty;
 
@@ -303,6 +327,39 @@ namespace LibraryPL {
 				}
 			}
 			onBookSave = save;
+
+			void updateImage() {
+				var img = GetUserImage();
+				void onSuccess(BitmapImage _img) {
+					if (_img == null) {
+						_img = _BookDefaultPic;
+					}
+					BookEdit_Pic.Source = _img;
+					book.BookImage = _img;
+				}
+				void onReject(RejectData data) {
+					BookEdit_Response.Content = data.message;
+				}
+				BooksLogic.UpdateBookImage(book.Id, user.Id, img, onSuccess, onReject);
+			}
+			onBookImageUpdate = updateImage;
+
+			void removeImage() {
+				void onSuccess(BitmapImage _img) {
+					BookEdit_Pic.Source = _BookDefaultPic;
+					book.BookImage = _BookDefaultPic;
+				}
+				void onReject(RejectData data) {
+					BookEdit_Response.Content = data.message;
+				}
+				BooksLogic.UpdateBookImage(book.Id, user.Id, null, onSuccess, onReject);
+			}
+			onBookImageDelete = removeImage;
+
+			void updateFile() {
+
+			}
+			onBookFileUpdate = updateFile;
 
 			BookEdit.Visibility = Visibility.Visible;
 			SetBackBtn(() => OpenBookEdit(book, false));
@@ -560,16 +617,8 @@ namespace LibraryPL {
 		}
 
 		void UpdateProfilePicture() {
-			OpenFileDialog dialog = new OpenFileDialog();
-			dialog.Filter = "Image|*.png;*.jpeg;*.jpg;*.gif";
-			dialog.Multiselect = false;
-			var res = dialog.ShowDialog();
-			if (res == null || !res.Value) return;
-			var img = new BitmapImage();
-			img.BeginInit();
-			img.UriSource = new Uri(dialog.FileName);
-			img.CacheOption = BitmapCacheOption.OnLoad;
-			img.EndInit();
+			var img = GetUserImage();
+			if (img == null) return;
 			void onSuccess(BitmapImage _img) {
 				Profile_ProfilePic.Source = _img;
 				user.ProfileImage = _img;
@@ -653,12 +702,20 @@ namespace LibraryPL {
 			onBookSave();
 		}
 
+		Action onBookImageUpdate = delegate { };
 		private void BtnSelectBookImg(object sender, RoutedEventArgs e) {
-
+			onBookImageUpdate();
 		}
 
-		private void BtnSelectBookFile(object sender, RoutedEventArgs e) {
+		Action onBookImageDelete = delegate { };
+		private void BtnDeleteBookImg(object sender, RoutedEventArgs e) {
+			onBookImageDelete();
+		}
 
+
+		Action onBookFileUpdate = delegate { };
+		private void BtnSelectBookFile(object sender, RoutedEventArgs e) {
+			onBookFileUpdate();
 		}
 
 		Action onBookEdit = delegate { };
