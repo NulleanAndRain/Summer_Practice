@@ -46,6 +46,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,11 +55,14 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImgReader.cs" />
     <Compile Include="MsSqlDAOBooks.cs" />
     <Compile Include="MsSqlDAOUsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MsSqlDAOBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library.DAL.Interface\Library.DAL.Interface.csproj">

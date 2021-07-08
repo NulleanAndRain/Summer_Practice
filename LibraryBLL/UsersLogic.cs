@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace LibraryBLL {
 	public class UsersLogic : IUsersLogic {
@@ -142,6 +143,23 @@ namespace LibraryBLL {
 
 		public bool IsUserLoggedIn(int id) {
 			return loggedUsers.Contains(id);
+		}
+
+		public void UpdatePrifilePic(int id, BitmapImage img, Action<BitmapImage> onSuccess, Action<RejectData> onReject) {
+			try {
+				if (!loggedUsers.Contains(id)) {
+					rejectUnauthorised(onReject);
+					return;
+				}
+				dao.UpdateProfileImage(id, img);
+				onSuccess(img);
+			} catch (Exception e) {
+				onReject(new RejectData(RejectType.Exeption, e.Message));
+			}
+		}
+
+		public BitmapImage GetProfilePicture(int id) {
+			return dao.GetProfileImage(id);
 		}
 
 		#endregion

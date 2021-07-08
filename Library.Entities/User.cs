@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace Library.Entities {
 	public class User {
@@ -12,5 +9,6 @@ namespace Library.Entities {
 		public string FirstName;
 		public string LastName;
 		public DateTime DateOfBirth;
+		public BitmapImage ProfileImage;
 	}
 }

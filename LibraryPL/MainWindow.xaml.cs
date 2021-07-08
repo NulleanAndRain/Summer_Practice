@@ -1,6 +1,7 @@
 ﻿using Library.BLL.Interface;
 using Library.DependencyResolver;
 using Library.Entities;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LibraryPL {
 	/// <summary>
@@ -32,6 +31,10 @@ namespace LibraryPL {
 		Grid[] _rest;
 
 		Grid[][] _all;
+
+		//default images
+		static readonly BitmapImage _ProfileDefaultPic = new BitmapImage(new Uri("pack://application:,,,/Img/profile.png"));
+		static readonly BitmapImage _BookDefaultPic = new BitmapImage(new Uri("pack://application:,,,/Img/book.png"));
 
 		//
 		IUsersLogic UsersLogic;
@@ -141,7 +144,13 @@ namespace LibraryPL {
 				HeaderUnlogged.Visibility = Visibility.Visible;
 			} else {
 				Header_user_name.Content = user.FirstName + ' ' + user.LastName;
-				//Header_user_pic // todo: header profile picture
+
+				if (user.ProfileImage == null) {
+					Header_user_pic.Source = _ProfileDefaultPic;
+				} else {
+					Header_user_pic.Source = user.ProfileImage;
+				}
+
 				HeaderLogged.Visibility = Visibility.Visible;
 			}
 		}
@@ -368,8 +377,10 @@ namespace LibraryPL {
 			}
 			void onSuccess(User u) {
 				user = u;
+				u.ProfileImage = UsersLogic.GetProfilePicture(u.Id);
 				ClearBackBtnStack();
 				OpenBooksPanel();
+				Login_Signup_response.Content = "Logged in";
 			}
 			void onReject(RejectData data) {
 				if (data.type != RejectType.Exeption) {
@@ -455,7 +466,12 @@ namespace LibraryPL {
 				Profile_LastName.Text = user.LastName;
 				Profile_BDate.SelectedDate = user.DateOfBirth;
 				ProfilePanel_Response.Text = string.Empty;
-				//todo: profile pic
+
+				if (user.ProfileImage == null) {
+					Profile_ProfilePic.Source = _ProfileDefaultPic;
+				} else {
+					Profile_ProfilePic.Source = user.ProfileImage;
+				}
 			}
 
 			void onReject(RejectData data) {
@@ -542,6 +558,40 @@ namespace LibraryPL {
 
 			SetBackBtn(() => OpenConfirmPanel(actionWithPass));
 		}
+
+		void UpdateProfilePicture() {
+			OpenFileDialog dialog = new OpenFileDialog();
+			dialog.Filter = "Image|*.png;*.jpeg;*.jpg;*.gif";
+			dialog.Multiselect = false;
+			var res = dialog.ShowDialog();
+			if (res == null || !res.Value) return;
+			var img = new BitmapImage();
+			img.BeginInit();
+			img.UriSource = new Uri(dialog.FileName);
+			img.CacheOption = BitmapCacheOption.OnLoad;
+			img.EndInit();
+			void onSuccess(BitmapImage _img) {
+				Profile_ProfilePic.Source = _img;
+				user.ProfileImage = _img;
+			}
+			void onReject(RejectData data) {
+				ProfilePanel_Response.Text = data.message;
+			}
+			UsersLogic.UpdatePrifilePic(user.Id, img, onSuccess, onReject);
+		}
+
+		void DeleteProfilePicture() {
+			user.ProfileImage = null;
+			void onSuccess(BitmapImage _img) {
+				Profile_ProfilePic.Source = _ProfileDefaultPic;
+			}
+			void onReject(RejectData data) {
+				ProfilePanel_Response.Text = data.message;
+			}
+
+			UsersLogic.UpdatePrifilePic(user.Id, null, onSuccess, onReject);
+		}
+
 
 		#endregion
 
@@ -675,7 +725,11 @@ namespace LibraryPL {
 		}
 
 		private void BtnSelectProfilePic(object sender, RoutedEventArgs e) {
+			UpdateProfilePicture();
+		}
 
+		private void BtnRemoveProfilePic(object sender, RoutedEventArgs e) {
+			DeleteProfilePicture();
 		}
 
 		#endregion

@@ -2,41 +2,19 @@
 using Library.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Media.Imaging;
 
 namespace LibraryDAL {
-	public class MsSqlDAOUsers : IDAOUsers, IDisposable {
-		#region Common
+	public class MsSqlDAOUsers : MsSqlDAOBase, IDAOUsers {
 
-		private SqlConnection conn;
-
-		public MsSqlDAOUsers(string ConnString) {
-			conn = new SqlConnection(ConnString);
-			conn.Open();
-			var cmd = new SqlCommand("sp_setapprole 'lib_app', 'DFa[7wzaVA'", conn);
-			cmd.ExecuteNonQuery();
-		}
-
-		private void execNonQuerry(string querry, List<SqlParameter> _params = null) {
-			var cmd = new SqlCommand(querry, conn);
-			if (_params != null) {
-				foreach (var param in _params) {
-					cmd.Parameters.Add(param);
-				}
-			}
-			cmd.ExecuteNonQuery();
-		}
-
-		public void Dispose() {
-			if (conn != null) conn.Dispose();
-		}
-
-		#endregion
+		public MsSqlDAOUsers(string ConnString) : base(ConnString) { }
 
 		#region Users
 
 		public void CreateUser(User user) {
-			var querry = $@"INSERT INTO Users (Username, PassHash, FirstName, LastName, DateOfBirth)
+			var querry = @"INSERT INTO Users (Username, PassHash, FirstName, LastName, DateOfBirth)
 							VALUES (@u, @p, @fn, @ln, @d)";
 			var p = new List<SqlParameter> {
 				new SqlParameter("@u", user.Username),
@@ -48,9 +26,10 @@ namespace LibraryDAL {
 			execNonQuerry(querry, p);
 		}
 
-		private User selectUser(string querry, List<SqlParameter> _params) {
+		private User selectUser(string querrySelector, List<SqlParameter> _params) {
 			User user = null;
-			var cmd = new SqlCommand(querry, conn);
+			var querry = "SELECT ID, Username, PassHash, FirstName, LastName, DateOfBirth FROM Users WHERE ";
+			var cmd = new SqlCommand(querry + querrySelector, conn);
 			foreach (var param in _params) {
 				cmd.Parameters.Add(param);
 			}
@@ -69,19 +48,19 @@ namespace LibraryDAL {
 		}
 
 		public User GetUserWithName(string username) {
-			var querry = "SELECT * FROM Users WHERE Username = @n";
+			var querry = "Username = @n";
 			var p = new List<SqlParameter> { new SqlParameter("@n", username) };
 			return selectUser(querry, p);
 		}
 
 		public User GetUserWithId(int id) {
-			var querry = "SELECT * FROM Users WHERE ID = @id";
+			var querry = "ID = @id";
 			var p = new List<SqlParameter> { new SqlParameter("@id", id) };
 			return selectUser(querry, p);
 		}
 
 		public void UpdateUser(int id, User newData) {
-			var querry = $@"UPDATE Users
+			var querry = @"UPDATE Users
 				SET Username = @u, PassHash = @p,
 				FirstName = @fn, LastName = @ln, DateOfBirth = @d
 				WHERE ID = @id";
@@ -99,6 +78,30 @@ namespace LibraryDAL {
 		public void DeleteUser(int id) {
 			var querry = "DELETE FROM Users WHERE ID = @id";
 			var p = new List<SqlParameter> { new SqlParameter("@id", id) };
+			execNonQuerry(querry, p);
+		}
+
+		public BitmapImage GetProfileImage(int id) {
+			var querry = "SELECT ProfilePicture FROM Users WHERE ID = @id";
+			var cmd = new SqlCommand(querry, conn);
+			cmd.Parameters.Add(new SqlParameter("@id", id));
+			BitmapImage img = null;
+			using (var reader = cmd.ExecuteReader()) {
+				if (reader.Read()) {
+					return ImgReader.GetImage(reader.GetStream(0));
+				}
+			}
+			return img;
+		}
+
+		public void UpdateProfileImage(int id, BitmapImage img) {
+			var querry = @"UPDATE Users 
+				SET ProfilePicture = @pic 
+				WHERE ID = @id";
+			var p = new List<SqlParameter> {
+				new SqlParameter("@pic", ImgReader.GetBytes(img)),
+				new SqlParameter("@id", id) 
+			};
 			execNonQuerry(querry, p);
 		}
 

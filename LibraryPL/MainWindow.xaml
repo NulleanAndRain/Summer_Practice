@@ -11,12 +11,15 @@
     <Grid>
         <Grid x:Name="Hidden" Visibility="Hidden">
             <Grid x:Name="_AddBook" Margin="10">
-                <Button Margin="0,-44,0,0" BorderBrush="{x:Null}" Foreground="{x:Null}" Height="94" Width="94" Background="{x:Null}" Click="AddBookbtn">
-                    <Image Source="Img/add.png"/>
+                <Button Margin="0" BorderBrush="{x:Null}" Foreground="{x:Null}" Background="{x:Null}" Click="AddBookbtn">
+                    <Grid>
+                        <Image Source="Img/add.png" Margin="0,0,0,44"/>
+                        <Label Content="Add book" VerticalAlignment="Bottom" FontSize="16" FontFamily="Segoe UI Light" HorizontalContentAlignment="Center" Height="44"/>
+                    </Grid>
                 </Button>
             </Grid>
         </Grid>
-        <Grid x:Name="MainPanel">
+        <Grid x:Name="MainPanel" Visibility="Hidden">
             <Grid x:Name="Header" Height="70" VerticalAlignment="Top" Background="#FFEAE4EE">
                 <Grid x:Name="HeaderUnlogged" Margin="0" HorizontalAlignment="Right" Width="260">
                     <Button Content="Sign Up" Margin="165,10,10,10" Background="#00000000" BorderBrush="{x:Null}" Foreground="#FF311A6C" FontSize="16" FontFamily="Segoe UI Light" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="40" Width="80" HorizontalAlignment="Center" VerticalAlignment="Center" Click="OpenSigbUpBtn"/>
@@ -192,6 +195,7 @@
             <Button Content="Select new picture" HorizontalAlignment="Center" Margin="0,0,460,41" VerticalAlignment="Center" Width="140" FontFamily="Segoe UI Light" FontSize="16" Height="30" Background="White" Click="BtnSelectProfilePic"/>
             <TextBlock x:Name="ProfilePanel_Response" Margin="520,0,0,92" Background="{x:Null}" Foreground="Red" FontSize="16" FontFamily="Segoe UI Light" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="223" TextWrapping="Wrap"/>
             <Button Content="Delete account" HorizontalAlignment="Center" Margin="552,350,0,0" VerticalAlignment="Center" Width="120" FontFamily="Segoe UI Light" FontSize="16" Height="30" Background="White" Click="BtnDeleteAcc"/>
+            <Button Content="Remove picture" HorizontalAlignment="Center" Margin="0,29,460,0" VerticalAlignment="Center" Width="140" FontFamily="Segoe UI Light" FontSize="16" Height="30" Background="White" Click="BtnRemoveProfilePic"/>
 
         </Grid>
         <Grid x:Name="ConfirmPassPanel" Background="#FFEAE4EE" Visibility="Hidden">

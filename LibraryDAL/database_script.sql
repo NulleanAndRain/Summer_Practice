@@ -1,39 +1,29 @@
 USE [D:\C#\LIBRARYAPP\LIBRARYDAL\LIBDATABASE.MDF] --create db and change link
 GO
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Books](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[BookName] [nvarchar](150) NOT NULL,
-	[Authors] [nvarchar](150) NOT NULL,
-	[YearOfPublishing] [int] NOT NULL,
- CONSTRAINT [PK__Books__3214EC2708455360] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+CREATE TABLE [dbo].[Books] (
+    [ID]               INT            IDENTITY (1, 1) NOT NULL,
+    [BookName]         NVARCHAR (150) NOT NULL,
+    [Authors]          NVARCHAR (150) NOT NULL,
+    [YearOfPublishing] INT            NOT NULL,
+    [PreviewImg] VARBINARY (MAX) NULL, 
+    [AttachedFile] VARBINARY(MAX) NULL, 
+    CONSTRAINT [PK__Books__3214EC2708455360] PRIMARY KEY CLUSTERED ([ID] ASC)
+);
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Users](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[Username] [varchar](24) NOT NULL,
-	[PassHash] [varchar](32) NOT NULL,
-	[FirstName] [nvarchar](50) NOT NULL,
-	[LastName] [nvarchar](50) NOT NULL,
-	[DateOfBirth] [date] NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+CREATE TABLE [dbo].[Users] (
+    [ID]             INT             IDENTITY (1, 1) NOT NULL,
+    [Username]       VARCHAR (24)    NOT NULL,
+    [PassHash]       VARCHAR (32)    NOT NULL,
+    [FirstName]      NVARCHAR (50)   NOT NULL,
+    [LastName]       NVARCHAR (50)   NOT NULL,
+    [DateOfBirth]    DATE            NOT NULL,
+    [ProfilePicture] VARBINARY (MAX) NULL,
+    PRIMARY KEY CLUSTERED ([ID] ASC),
+    CONSTRAINT [U_Username] UNIQUE NONCLUSTERED ([Username] ASC)
+);
+
+
 
 ALTER TABLE Users ADD CONSTRAINT U_Username UNIQUE(Username)
 

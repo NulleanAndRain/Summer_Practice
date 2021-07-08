@@ -6,33 +6,9 @@ using System.Data.SqlClient;
 using System.Text;
 
 namespace LibraryDAL {
-	public class MsSqlDAOBooks : IDAOBooks, IDisposable {
-		#region Common
+	public class MsSqlDAOBooks : MsSqlDAOBase, IDAOBooks {
 
-		private SqlConnection conn;
-
-		public MsSqlDAOBooks(string ConnString) {
-			conn = new SqlConnection(ConnString);
-			conn.Open();
-			var cmd = new SqlCommand("sp_setapprole 'lib_app', 'DFa[7wzaVA'", conn);
-			cmd.ExecuteNonQuery();
-		}
-
-		private void execNonQuerry(string querry, List<SqlParameter> _params = null) {
-			var cmd = new SqlCommand(querry, conn);
-			if (_params != null) {
-				foreach (var param in _params) {
-					cmd.Parameters.Add(param);
-				}
-			}
-			cmd.ExecuteNonQuery();
-		}
-
-		public void Dispose() {
-			if (conn != null) conn.Dispose();
-		}
-
-		#endregion
+		public MsSqlDAOBooks(string ConnString) : base(ConnString) { }
 
 		#region Books
 
@@ -47,9 +23,10 @@ namespace LibraryDAL {
 			execNonQuerry(querry, p);
 		}
 
-		private List<Book> getBooksWithQuerry(string querry, List<SqlParameter> _params = null) {
+		private List<Book> getBooksWithQuerry(string querrySelector = "", List<SqlParameter> _params = null) {
 			List<Book> books = new List<Book>();
-			var cmd = new SqlCommand(querry, conn);
+			var querry = "SELECT ID, BookName, Authors, YearOfPublishing FROM Books ";
+			var cmd = new SqlCommand(querry + querrySelector, conn);
 			if (_params != null) {
 				foreach (var param in _params) {
 					cmd.Parameters.Add(param);
@@ -69,30 +46,29 @@ namespace LibraryDAL {
 		}
 
 		public List<Book> GetBooks() {
-			var querry = "SELECT * FROM Books";
-			return getBooksWithQuerry(querry);
+			return getBooksWithQuerry();
 		}
 
 		public List<Book> GetBooksWithAuthors(string[] authors) {
 			if (authors.Length == 0) return null;
-			var querry = new StringBuilder("SELECT * FROM Books WHERE Authors LIKE ");
+			var querrySelector = new StringBuilder("WHERE Authors LIKE ");
 			var _params = new List<SqlParameter>();
 			for (int i = 0; i < authors.Length; i++) {
 				var author = authors[i];
 				var paramName = $"@a{i}";
-				querry.Append(paramName);
+				querrySelector.Append(paramName);
 				_params.Add(new SqlParameter(paramName, $"%{author}%"));
 				if (i != authors.Length - 1) {
-					querry.Append("AND LIKE ");
+					querrySelector.Append("AND LIKE ");
 				}
 			}
-			return getBooksWithQuerry(querry.ToString(), _params);
+			return getBooksWithQuerry(querrySelector.ToString(), _params);
 		}
 
 		public List<Book> GetBooksWithName(string name) {
-			var querry = "SELECT * FROM Books WHERE BookName LIKE @n";
+			var querrySelector = "WHERE BookName LIKE @n";
 			var p = new List<SqlParameter> { new SqlParameter("@n", $"%{name}%") };
-			return getBooksWithQuerry(querry, p);
+			return getBooksWithQuerry(querrySelector, p);
 		}
 
 		public void EditBook(int id, Book newData) {
