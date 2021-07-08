@@ -168,8 +168,8 @@ namespace LibraryDAL {
 
 		public void UpdateUser(int id, User newData) {
 			var querry = $@"UPDATE Users
-				SET Username = @u, PassHash = @pm
-				FirstName = @fn,LastName = @ln, DateOfBirth = @d
+				SET Username = @u, PassHash = @p,
+				FirstName = @fn, LastName = @ln, DateOfBirth = @d
 				WHERE ID = @id";
 			var p = new List<SqlParameter> {
 				new SqlParameter("@u", newData.Username),
@@ -179,7 +179,7 @@ namespace LibraryDAL {
 				new SqlParameter("@d", newData.DateOfBirth),
 				new SqlParameter("@id", id)
 			};
-			execNonQuerry(querry);
+			execNonQuerry(querry, p);
 		}
 
 		public void DeleteUser(int id) {

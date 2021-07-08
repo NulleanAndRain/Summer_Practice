@@ -145,6 +145,7 @@ namespace LibraryPL {
 
 		void OpenBooksPanel(bool updateBooks = true) {
 			OpenMainPanel();
+			ClearBackBtnStack();
 			HeaderControls.Visibility = Visibility.Visible;
 			SearchInput.Text = searchString;
 			if (updateBooks) {
@@ -225,6 +226,14 @@ namespace LibraryPL {
 				OpenBookEdit(book, true);
 			}
 			onBookEdit = edit;
+
+			if (user == null || user.Id == -1) {
+				BookView_Edit.Visibility = Visibility.Hidden;
+				BookView_Delete.Visibility = Visibility.Hidden;
+			} else {
+				BookView_Edit.Visibility = Visibility.Visible;
+				BookView_Delete.Visibility = Visibility.Visible;
+			}
 
 			void load() {
 				//todo: book loading
@@ -436,25 +445,99 @@ namespace LibraryPL {
 
 		void OpenProfileEdit(bool clearForm = true) {
 			CloseAll();
+			Profile_NewPass.Password = string.Empty;
 			if (clearForm) {
 				Profile_UserName.Text = user.Username;
 				Profile_FirstName.Text = user.FirstName;
 				Profile_LastName.Text = user.LastName;
 				Profile_BDate.SelectedDate = user.DateOfBirth;
+				ProfilePanel_Response.Text = string.Empty;
 				//todo: profile pic
 			}
+
+			void onReject(RejectData data) {
+				OpenProfileEdit(false);
+				ProfilePanel_Response.Text = data.message;
+			}
+
 			void submit() {
-				//todo: submiting chamges
+				void onSuccess() {
+					OpenBooksPanel();
+				}
+
+				if (Profile_UserName.Text != user.Username || !string.IsNullOrEmpty(Profile_NewPass.Password)) {
+					if (Profile_UserName.Text != user.Username) {
+						if (logic.IsUsernameTaken(Profile_UserName.Text)) {
+							ProfilePanel_Response.Text = "Username is already taken";
+							return;
+						}
+					}
+					string newPass = null;
+					if (!string.IsNullOrEmpty(Profile_NewPass.Password)) {
+						if (Profile_NewPass.Password.Length < 8) {
+							ProfilePanel_Response.Text = "Password should be at least 8 symbols long";
+							return;
+						}
+						newPass = Profile_NewPass.Password;
+					}
+					user.Username = Profile_UserName.Text;
+					user.FirstName = Profile_FirstName.Text;
+					user.LastName = Profile_LastName.Text;
+					user.DateOfBirth = Profile_BDate.SelectedDate.Value.Date;
+
+					void doWithPass(string pass) {
+						logic.UpdateUserPassUsername(user, pass, onSuccess, onReject, newPass);
+					}
+					OpenConfirmPanel(doWithPass);
+					return;
+				}
+				user.FirstName = Profile_FirstName.Text;
+				user.LastName = Profile_LastName.Text;
+				user.DateOfBirth = Profile_BDate.SelectedDate.Value.Date;
+
+				logic.UpdateUserData(user, onSuccess, onReject);
 			}
 			onProfileSubmit = submit;
 
 			void delete() {
+				void onSuccess() {
+					LogOut();
+					OpenBooksPanel();
+				}
 
+				void doWithPass(string pass) {
+					logic.DeleteUser(user.Id, pass, onSuccess, onReject);
+				}
+
+				OpenConfirmPanel(doWithPass);
 			}
 			onProfileDelete = delete;
 
 			ProfilePanel.Visibility = Visibility.Visible;
 			SetBackBtn(() => OpenProfileEdit(false));
+		}
+
+		void OpenConfirmPanel(Action<string> actionWithPass) {
+			CloseAll();
+			ConfirmPass_passInput.Password = string.Empty;
+			ConfirmPass_passInputRepeat.Password = string.Empty;
+			void confirm() {
+				if (string.IsNullOrEmpty(ConfirmPass_passInput.Password)||
+					string.IsNullOrEmpty(ConfirmPass_passInputRepeat.Password)) {
+					ConfirmPass_response.Content = "Enter all fields";
+					return;
+				}
+				if (!ConfirmPass_passInput.Password.Equals(ConfirmPass_passInputRepeat.Password)) {
+					ConfirmPass_response.Content = "Passwords do not match";
+					return;
+				}
+				Back();
+				actionWithPass(ConfirmPass_passInput.Password);
+			}
+			onPassConfirm = confirm;
+			ConfirmPassPanel.Visibility = Visibility.Visible;
+
+			SetBackBtn(() => OpenConfirmPanel(actionWithPass));
 		}
 
 		#endregion
@@ -513,6 +596,10 @@ namespace LibraryPL {
 
 		}
 
+		private void BtnSelectBookFile(object sender, RoutedEventArgs e) {
+
+		}
+
 
 		Action onBookLoad = delegate { };
 		private void LoadBookBtn(object sender, RoutedEventArgs e) {
@@ -567,6 +654,11 @@ namespace LibraryPL {
 		Action onProfileDelete = delegate { };
 		private void BtnDeleteAcc(object sender, RoutedEventArgs e) {
 			onProfileDelete();
+		}
+
+		Action onPassConfirm = delegate { };
+		private void BtnConfirmPass(object sender, RoutedEventArgs e) {
+			onPassConfirm();
 		}
 	}
 	#endregion

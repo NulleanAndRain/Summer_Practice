@@ -26,7 +26,7 @@ namespace LibraryBLL {
 		}
 
 		void rejectPass(Action<RejectData> onReject) {
-			onReject(new RejectData(RejectType.WrongPass, "Password is incorrect"));
+			onReject(new RejectData(RejectType.WrongPass, "Incorrect password"));
 		}
 
 		#region Books
@@ -124,7 +124,7 @@ namespace LibraryBLL {
 			loggedUsers.Remove(id);
 		}
 
-		public void UpdateUser(User newData, string pass, Action onSuccess, Action<RejectData> onReject) {
+		public void UpdateUserPassUsername(User newData, string pass, Action onSuccess, Action<RejectData> onReject, string newPass = null) {
 			try {
 				var oldData = dao.GetUserWithId(newData.Id);
 				if (!oldData.PassHash.Equals(getPassHash(pass, oldData.Username))) {
@@ -138,10 +138,31 @@ namespace LibraryBLL {
 						return;
 					}
 				}
+				if (newPass != null) {
+					newData.PassHash = getPassHash(newPass, newData.Username);
+				}
 				dao.UpdateUser(newData.Id, newData);
+				onSuccess();
 			} catch (Exception e) {
 				onReject(new RejectData(RejectType.Exeption, e.Message));
 			}
+		}
+
+		public void UpdateUserData(User newData, Action onSuccess, Action<RejectData> onReject) {
+			try {
+				var oldData = dao.GetUserWithId(newData.Id);
+				newData.Username = oldData.Username;
+				newData.PassHash = oldData.PassHash;
+				dao.UpdateUser(newData.Id, newData);
+				onSuccess();
+			} catch (Exception e) {
+				onReject(new RejectData(RejectType.Exeption, e.Message));
+			}
+		}
+
+		public bool IsUsernameTaken(string name) {
+			var user = dao.GetUserWithName(name);
+			return user != null && user.Id != -1;
 		}
 
 		public void DeleteUser(int id, string pass, Action onSuccess, Action<RejectData> onReject) {
@@ -156,6 +177,8 @@ namespace LibraryBLL {
 					return;
 				}
 				dao.DeleteUser(id);
+				loggedUsers.Remove(id);
+				onSuccess();
 			} catch (Exception e) {
 				onReject(new RejectData(RejectType.Exeption, e.Message));
 			}
