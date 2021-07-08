@@ -4,6 +4,7 @@ using Library.Entities;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -271,7 +272,7 @@ namespace LibraryPL {
 			}
 
 			void load() {
-				//todo: book loading
+
 			}
 			onBookLoad = load;
 
@@ -357,7 +358,17 @@ namespace LibraryPL {
 			onBookImageDelete = removeImage;
 
 			void updateFile() {
-
+				var dialog = new OpenFileDialog();
+				dialog.Filter = "Text files |*.doc;*.docx;*.txt;*.pdf";
+				dialog.Multiselect = false;
+				var res = dialog.ShowDialog();
+				if (res == null || !res.Value) return;
+				var file = File.ReadAllBytes(dialog.FileName);
+				if (file == null || file.Length == 0) return;
+				void onReject(RejectData data) {
+					BookEdit_Response.Content = data.message;
+				}
+				BooksLogic.UpdateBookFile(book.Id, user.Id, file, ()=>{}, onReject);
 			}
 			onBookFileUpdate = updateFile;
 

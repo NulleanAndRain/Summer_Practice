@@ -14,6 +14,6 @@ namespace Library.BLL.Interface {
 		BitmapImage GetBookImage(int id);
 		void UpdateBookImage(int id, int userId, BitmapImage img, Action<BitmapImage> onSuccess, Action<RejectData> onReject);
 		byte[] GetBookFile(int id);
-		void UpdateBookFile(int id, int userId, byte[] file, Action<BitmapImage> onSuccess, Action<RejectData> onReject);
+		void UpdateBookFile(int id, int userId, byte[] file, string filename, Action onSuccess, Action<RejectData> onReject);
 	}
 }

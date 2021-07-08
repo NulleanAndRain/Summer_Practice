@@ -79,7 +79,7 @@ namespace LibraryBLL {
 			throw new NotImplementedException();
 		}
 
-		public void UpdateBookFile(int id, int userId, byte[] file, Action<BitmapImage> onSuccess, Action<RejectData> onReject) {
+		public void UpdateBookFile(int id, int userId, byte[] file, string filename, Action onSuccess, Action<RejectData> onReject) {
 			throw new NotImplementedException();
 		}
 
