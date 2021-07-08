@@ -41,7 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILogic.cs" />
+    <Compile Include="IBooksLogic.cs" />
+    <Compile Include="IUsersLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RejectData.cs" />
   </ItemGroup>

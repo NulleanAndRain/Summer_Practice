@@ -6,16 +6,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace LibraryBLL {
-	public class Logic : ILogic {
+	public class UsersLogic : IUsersLogic {
 
 		HashSet<int> loggedUsers;
-		IDAO dao;
+		IDAOUsers dao;
 		MD5 hashGen;
 
-		public Logic(IDAO dao) {
+		public UsersLogic(IDAOUsers dao) {
 			this.dao = dao;
 			loggedUsers = new HashSet<int>();
 			hashGen = MD5.Create();
@@ -28,49 +27,6 @@ namespace LibraryBLL {
 		void rejectPass(Action<RejectData> onReject) {
 			onReject(new RejectData(RejectType.WrongPass, "Incorrect password"));
 		}
-
-		#region Books
-
-		public void AddBook(Book book, int userId, Action<string> onSuccess, Action<RejectData> onReject) {
-			if (!loggedUsers.Contains(userId)) {
-				rejectUnauthorised(onReject);
-				return;
-			}
-			dao.AddBook(book);
-			onSuccess("Book successfully added");
-		}
-
-		public List<Book> GetBooks() {
-			return dao.GetBooks();
-		}
-
-		public List<Book> GetBooksWithAuthors(string[] authors) {
-			return dao.GetBooksWithAuthors(authors);
-		}
-
-		public List<Book> GetBooksWithName(string name) {
-			return dao.GetBooksWithName(name);
-		}
-
-		public void EditBook(int id, Book newData, int userId, Action<string> onSuccess, Action<RejectData> onReject) {
-			if (!loggedUsers.Contains(userId)) {
-				rejectUnauthorised(onReject);
-				return;
-			}
-			dao.EditBook(id, newData);
-			onSuccess("Book successfully edited");
-		}
-
-		public void DeleteBook(int id, int userId, Action<string> onSuccess, Action<RejectData> onReject) {
-			if (!loggedUsers.Contains(userId)) {
-				rejectUnauthorised(onReject);
-				return;
-			}
-			dao.DeleteBook(id);
-			onSuccess("Book successfully deleted");
-		}
-
-		#endregion
 
 		#region Users
 
@@ -182,6 +138,10 @@ namespace LibraryBLL {
 			} catch (Exception e) {
 				onReject(new RejectData(RejectType.Exeption, e.Message));
 			}
+		}
+
+		public bool IsUserLoggedIn(int id) {
+			return loggedUsers.Contains(id);
 		}
 
 		#endregion

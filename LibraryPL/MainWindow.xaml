@@ -160,7 +160,7 @@
             <Button Content="Back" HorizontalAlignment="Center" Margin="0,330,159,0" Width="81" FontSize="20" Background="White" BorderBrush="{x:Null}" FontFamily="Segoe UI Light" Height="31" VerticalAlignment="Center" Click="BtnBack"/>
             <Label x:Name="Login_Signup_response" Content="" HorizontalAlignment="Center" Margin="0,252,0,0" VerticalAlignment="Center" FontFamily="Segoe UI Light" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Background="{x:Null}" Foreground="Red"/>
         </Grid>
-        <Grid x:Name="ProfilePanel" Background="#FFEAE4EE" Visibility="Hidden">
+        <Grid x:Name="ProfilePanel" Background="#FFEAE4EE">
             <Grid HorizontalAlignment="Center" Height="150" Margin="0,0,460,231" VerticalAlignment="Center" Width="150" Background="White">
                 <Image x:Name="Profile_ProfilePic" Source="Img/profile.png"/>
             </Grid>
@@ -189,7 +189,7 @@
             <Label Content="* Requires confirming password" HorizontalAlignment="Center" Margin="0,285,98,0" VerticalAlignment="Center" Background="{x:Null}" Foreground="Red"/>
             <Button Content="Back" HorizontalAlignment="Center" Margin="0,350,185,0" VerticalAlignment="Center" Width="90" FontFamily="Segoe UI Light" FontSize="16" Background="White" Height="30" Click="BtnBack"/>
             <Button Content="Submit" HorizontalAlignment="Center" Margin="185,350,0,0" VerticalAlignment="Center" Width="90" FontFamily="Segoe UI Light" FontSize="16" Background="White" Height="30" Click="BtnProfileSubmit"/>
-            <Button Content="Select new picture" HorizontalAlignment="Center" Margin="0,0,460,41" VerticalAlignment="Center" Width="140" FontFamily="Segoe UI Light" FontSize="16" Height="30" Background="White"/>
+            <Button Content="Select new picture" HorizontalAlignment="Center" Margin="0,0,460,41" VerticalAlignment="Center" Width="140" FontFamily="Segoe UI Light" FontSize="16" Height="30" Background="White" Click="BtnSelectProfilePic"/>
             <TextBlock x:Name="ProfilePanel_Response" Margin="520,0,0,92" Background="{x:Null}" Foreground="Red" FontSize="16" FontFamily="Segoe UI Light" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Height="223" TextWrapping="Wrap"/>
             <Button Content="Delete account" HorizontalAlignment="Center" Margin="552,350,0,0" VerticalAlignment="Center" Width="120" FontFamily="Segoe UI Light" FontSize="16" Height="30" Background="White" Click="BtnDeleteAcc"/>
 

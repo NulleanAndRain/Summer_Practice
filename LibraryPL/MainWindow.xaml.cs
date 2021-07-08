@@ -34,7 +34,8 @@ namespace LibraryPL {
 		Grid[][] _all;
 
 		//
-		ILogic logic;
+		IUsersLogic UsersLogic;
+		IBooksLogic BooksLogic;
 		List<Book> Books;
 		User user = new User();
 		int currentPage;
@@ -44,10 +45,12 @@ namespace LibraryPL {
 		Stack<Action> BackBtnActions = new Stack<Action>();
 
 		#region Initialisation
+		private string ConnString => $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\c#\LibraryApp\LibraryDAL\LibDatabase.mdf;Integrated Security=True";
 
 		public MainWindow() {
 			InitializeComponent();
-			logic = DependencyResolver.Instance.GetLogicObject();
+			UsersLogic = DependencyResolver.Instance.GetUsersLogicObject(ConnString);
+			BooksLogic = DependencyResolver.Instance.GetBooksLogicObject(ConnString, UsersLogic);
 			Hidden.Visibility = Visibility.Hidden;
 			SetupCollections();
 			OpenBooksPanel();
@@ -177,13 +180,13 @@ namespace LibraryPL {
 			if (useSearch && !string.IsNullOrEmpty(searchString)) {
 				var authors = searchString.Split(new char[] { ',', ' ' },
 					StringSplitOptions.RemoveEmptyEntries);
-				var l1 = logic.GetBooksWithName(searchString);
-				var l2 = logic.GetBooksWithAuthors(authors);
+				var l1 = BooksLogic.GetBooksWithName(searchString);
+				var l2 = BooksLogic.GetBooksWithAuthors(authors);
 				Books.Clear();
 				Books.AddRange(l1);
 				Books.AddRange(l2);
 			} else {
-				Books = logic.GetBooks();
+				Books = BooksLogic.GetBooks();
 			}
 		}
 
@@ -249,7 +252,7 @@ namespace LibraryPL {
 					BookView_Response.Content = data.message;
 				}
 
-				logic.DeleteBook(book.Id, user.Id, onSuccess, onReject);
+				BooksLogic.DeleteBook(book.Id, user.Id, onSuccess, onReject);
 			}
 			onBookDelete = delete;
 
@@ -285,9 +288,9 @@ namespace LibraryPL {
 				}
 
 				if (book.Id == -1) {
-					logic.AddBook(book, user.Id, onSuccess, onReject);
+					BooksLogic.AddBook(book, user.Id, onSuccess, onReject);
 				} else {
-					logic.EditBook(book.Id, book, user.Id, onSuccess, onReject);
+					BooksLogic.EditBook(book.Id, book, user.Id, onSuccess, onReject);
 				}
 			}
 			onBookSave = save;
@@ -323,7 +326,7 @@ namespace LibraryPL {
 		}
 
 		void LogOut() {
-			logic.LogOut(user.Id);
+			UsersLogic.LogOut(user.Id);
 			user = new User();
 			HeaderLogged.Visibility = Visibility.Hidden;
 			HeaderUnlogged.Visibility = Visibility.Visible;
@@ -373,7 +376,7 @@ namespace LibraryPL {
 					Login_Signup_response.Content = data.message;
 				}
 			}
-			logic.LogIn(Login_username.Text, Login_pass.Password, onSuccess, onReject);
+			UsersLogic.LogIn(Login_username.Text, Login_pass.Password, onSuccess, onReject);
 		}
 
 		void OpenSignup(bool clearForm = true) {
@@ -436,7 +439,7 @@ namespace LibraryPL {
 				LastName = Signup_lastname.Text,
 				DateOfBirth = Signup_bdate.SelectedDate.Value.Date
 			};
-			logic.CreateUser(_u, Signup_pass.Password, onSuccess, onReject);
+			UsersLogic.CreateUser(_u, Signup_pass.Password, onSuccess, onReject);
 		}
 
 		#endregion
@@ -467,7 +470,7 @@ namespace LibraryPL {
 
 				if (Profile_UserName.Text != user.Username || !string.IsNullOrEmpty(Profile_NewPass.Password)) {
 					if (Profile_UserName.Text != user.Username) {
-						if (logic.IsUsernameTaken(Profile_UserName.Text)) {
+						if (UsersLogic.IsUsernameTaken(Profile_UserName.Text)) {
 							ProfilePanel_Response.Text = "Username is already taken";
 							return;
 						}
@@ -486,7 +489,7 @@ namespace LibraryPL {
 					user.DateOfBirth = Profile_BDate.SelectedDate.Value.Date;
 
 					void doWithPass(string pass) {
-						logic.UpdateUserPassUsername(user, pass, onSuccess, onReject, newPass);
+						UsersLogic.UpdateUserPassUsername(user, pass, onSuccess, onReject, newPass);
 					}
 					OpenConfirmPanel(doWithPass);
 					return;
@@ -495,7 +498,7 @@ namespace LibraryPL {
 				user.LastName = Profile_LastName.Text;
 				user.DateOfBirth = Profile_BDate.SelectedDate.Value.Date;
 
-				logic.UpdateUserData(user, onSuccess, onReject);
+				UsersLogic.UpdateUserData(user, onSuccess, onReject);
 			}
 			onProfileSubmit = submit;
 
@@ -506,7 +509,7 @@ namespace LibraryPL {
 				}
 
 				void doWithPass(string pass) {
-					logic.DeleteUser(user.Id, pass, onSuccess, onReject);
+					UsersLogic.DeleteUser(user.Id, pass, onSuccess, onReject);
 				}
 
 				OpenConfirmPanel(doWithPass);
@@ -550,70 +553,10 @@ namespace LibraryPL {
 			Back();
 		}
 
+		#region Books view
 
 		private void AddBookbtn(object sender, RoutedEventArgs e) {
 			OpenBookEdit(new Book());
-		}
-
-		Action onBookSave = delegate { };
-		private void BtnSaveBook(object sender, RoutedEventArgs e) {
-			onBookSave();
-		}
-
-		private void OpenLogInBtn(object sender, RoutedEventArgs e) {
-			OpenLogin();
-		}
-
-		private void OpenSigbUpBtn(object sender, RoutedEventArgs e) {
-			OpenSignup();
-		}
-
-		private void BtnEditProfile(object sender, RoutedEventArgs e) {
-			OpenProfileEdit();
-		}
-
-		private void BtnLogOut(object sender, RoutedEventArgs e) {
-			LogOut();
-		}
-
-
-		private void BtnSwitchToSignup(object sender, RoutedEventArgs e) {
-			OpenSignup(false);
-		}
-		private void BtnLogIn(object sender, RoutedEventArgs e) {
-			LogIn();
-		}
-
-
-		private void BtnSwitchToLogin(object sender, RoutedEventArgs e) {
-			OpenLogin(false);
-		}
-		private void BtnSignUp(object sender, RoutedEventArgs e) {
-			SignUp();
-		}
-
-		private void BtnSelectBookImg(object sender, RoutedEventArgs e) {
-
-		}
-
-		private void BtnSelectBookFile(object sender, RoutedEventArgs e) {
-
-		}
-
-
-		Action onBookLoad = delegate { };
-		private void LoadBookBtn(object sender, RoutedEventArgs e) {
-			onBookLoad();
-		}
-
-		Action onBookEdit = delegate { };
-		private void BookViewEditBtn(object sender, RoutedEventArgs e) {
-			onBookEdit();
-		}
-
-		Action onBookDelete = delegate { };
-		private void BookDeleteBtn(object sender, RoutedEventArgs e) {
-			onBookDelete();
 		}
 
 		private void BtnPrevPage(object sender, RoutedEventArgs e) {
@@ -646,6 +589,76 @@ namespace LibraryPL {
 			SearchBooks();
 		}
 
+		Action onBookLoad = delegate { };
+		private void LoadBookBtn(object sender, RoutedEventArgs e) {
+			onBookLoad();
+		}
+
+		#endregion
+
+		#region Book editing
+
+		Action onBookSave = delegate { };
+		private void BtnSaveBook(object sender, RoutedEventArgs e) {
+			onBookSave();
+		}
+
+		private void BtnSelectBookImg(object sender, RoutedEventArgs e) {
+
+		}
+
+		private void BtnSelectBookFile(object sender, RoutedEventArgs e) {
+
+		}
+
+		Action onBookEdit = delegate { };
+		private void BookViewEditBtn(object sender, RoutedEventArgs e) {
+			onBookEdit();
+		}
+
+		Action onBookDelete = delegate { };
+		private void BookDeleteBtn(object sender, RoutedEventArgs e) {
+			onBookDelete();
+		}
+
+		#endregion
+
+		#region Login and signup
+
+		private void OpenLogInBtn(object sender, RoutedEventArgs e) {
+			OpenLogin();
+		}
+
+		private void OpenSigbUpBtn(object sender, RoutedEventArgs e) {
+			OpenSignup();
+		}
+
+		private void BtnSwitchToSignup(object sender, RoutedEventArgs e) {
+			OpenSignup(false);
+		}
+		private void BtnLogIn(object sender, RoutedEventArgs e) {
+			LogIn();
+		}
+
+		private void BtnSwitchToLogin(object sender, RoutedEventArgs e) {
+			OpenLogin(false);
+		}
+		private void BtnSignUp(object sender, RoutedEventArgs e) {
+			SignUp();
+		}
+
+		private void BtnLogOut(object sender, RoutedEventArgs e) {
+			LogOut();
+		}
+
+		#endregion
+
+		#region ProfileEditing
+
+		private void BtnEditProfile(object sender, RoutedEventArgs e) {
+			OpenProfileEdit();
+		}
+
 		Action onProfileSubmit = delegate { };
 		private void BtnProfileSubmit(object sender, RoutedEventArgs e) {
 			onProfileSubmit();
@@ -660,6 +673,13 @@ namespace LibraryPL {
 		private void BtnConfirmPass(object sender, RoutedEventArgs e) {
 			onPassConfirm();
 		}
+
+		private void BtnSelectProfilePic(object sender, RoutedEventArgs e) {
+
+		}
+
+		#endregion
+
+		#endregion
 	}
-	#endregion
 }

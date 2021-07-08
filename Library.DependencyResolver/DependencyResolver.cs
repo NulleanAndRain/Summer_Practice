@@ -7,9 +7,20 @@ namespace Library.DependencyResolver {
 	public class DependencyResolver {
 		public static DependencyResolver Instance { get; } = new DependencyResolver();
 
-		IDAO dao;
-		ILogic logic;
-		IDAO GetDAO() => dao != null? dao : dao = new MsSqlDAO();
-		public ILogic GetLogicObject() => logic != null? logic : logic = new Logic(GetDAO());
+		IDAOUsers daoUsers;
+		IUsersLogic logicUsers;
+		IDAOUsers GetDAOUsers(string ConnString) => daoUsers != null ? daoUsers : daoUsers = new MsSqlDAOUsers(ConnString);
+		public IUsersLogic GetUsersLogicObject(string ConnString) => 
+			logicUsers != null ? 
+				logicUsers :
+				logicUsers = new UsersLogic(GetDAOUsers(ConnString));
+
+		IDAOBooks daoBooks;
+		IBooksLogic logicBooks;
+		IDAOBooks GetDAOBooks(string ConnString) => daoBooks != null? daoBooks : daoBooks = new MsSqlDAOBooks(ConnString);
+		public IBooksLogic GetBooksLogicObject(string ConnString, IUsersLogic usersLogic) => 
+			logicBooks != null? 
+				logicBooks :
+				logicBooks = new BooksLogic(GetDAOBooks(ConnString), usersLogic);
 	}
 }
