@@ -323,6 +323,8 @@ namespace LibraryPL {
 			}
 			BookEdit_Response.Content = string.Empty;
 
+			Action onNewBookSaveImg = delegate { };
+			Action onNewBookSaveFile = delegate { };
 			void save() {
 				book.Name = BookEdit_BookName.Text;
 				book.Authors = BookEdit_Authors.Text;
@@ -333,8 +335,14 @@ namespace LibraryPL {
 					return;
 				}
 
-				void onSuccess(string _) {
-					GetBooks();
+				void onSuccessNew(int id) {
+					book.Id = id;
+					onNewBookSaveImg();
+					onNewBookSaveFile();
+					onSuccessEdit(id.ToString());
+				}
+				void onSuccessEdit(string _) {
+					GetBooks(!string.IsNullOrEmpty(searchString));
 					OpenBooksPanel(false);
 				}
 				void onReject(RejectData data) {
@@ -342,15 +350,21 @@ namespace LibraryPL {
 				}
 
 				if (book.Id == -1) {
-					BooksLogic.AddBook(book, user.Id, onSuccess, onReject);
+					BooksLogic.AddBook(book, user.Id, onSuccessNew, onReject);
 				} else {
-					BooksLogic.EditBook(book.Id, book, user.Id, onSuccess, onReject);
+					BooksLogic.EditBook(book.Id, book, user.Id, onSuccessEdit, onReject);
 				}
 			}
 			onBookSave = save;
 
-			void updateImage() { //todo: fix adding pic to new book
+			void updateImage() {
 				var img = GetUserImage();
+				//BookEdit_Response.Content = "Adding img";
+				if (img == null) {
+					BookEdit_Pic.Source = _BookDefaultPic;
+				} else {
+					BookEdit_Pic.Source = img;
+				}
 				void onSuccess(BitmapImage _img) {
 					if (_img == null) {
 						_img = _BookDefaultPic;
@@ -361,7 +375,11 @@ namespace LibraryPL {
 				void onReject(RejectData data) {
 					BookEdit_Response.Content = data.message;
 				}
-				BooksLogic.UpdateBookImage(book.Id, user.Id, img, onSuccess, onReject);
+				if (book.Id == -1) {
+					onNewBookSaveImg = () => BooksLogic.UpdateBookImage(book.Id, user.Id, img, onSuccess, onReject);
+				} else {
+					BooksLogic.UpdateBookImage(book.Id, user.Id, img, onSuccess, onReject);
+				}
 			}
 			onBookImageUpdate = updateImage;
 
@@ -373,7 +391,11 @@ namespace LibraryPL {
 				void onReject(RejectData data) {
 					BookEdit_Response.Content = data.message;
 				}
-				BooksLogic.UpdateBookImage(book.Id, user.Id, null, onSuccess, onReject);
+				if (book.Id == -1) {
+					onNewBookSaveImg = delegate { };
+				} else {
+					BooksLogic.UpdateBookImage(book.Id, user.Id, null, onSuccess, onReject);
+				}
 			}
 			onBookImageDelete = removeImage;
 
@@ -391,7 +413,11 @@ namespace LibraryPL {
 				}
 				var path = dialog.FileName.Split(Path.DirectorySeparatorChar);
 				var name = path[path.Length - 1];
-				BooksLogic.UpdateBookFile(book.Id, user.Id, file, name, ()=>{}, onReject);
+				if (book.Id == -1) {
+					onNewBookSaveFile = () => BooksLogic.UpdateBookFile(book.Id, user.Id, file, name, () => { }, onReject);
+				} else {
+					BooksLogic.UpdateBookFile(book.Id, user.Id, file, name, () => { }, onReject);
+				}
 			}
 			onBookFileUpdate = updateFile;
 

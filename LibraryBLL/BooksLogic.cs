@@ -22,13 +22,13 @@ namespace LibraryBLL {
 
 		#region Books
 
-		public void AddBook(Book book, int userId, Action<string> onSuccess, Action<RejectData> onReject) {
+		public void AddBook(Book book, int userId, Action<int> onSuccess, Action<RejectData> onReject) {
 			if (!users.IsUserLoggedIn(userId)) {
 				rejectUnauthorised(onReject);
 				return;
 			}
-			dao.AddBook(book);
-			onSuccess("Book successfully added");
+			var id = dao.AddBook(book);
+			onSuccess(id);
 		}
 
 		public List<Book> GetBooks() {

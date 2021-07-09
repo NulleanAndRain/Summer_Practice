@@ -79,7 +79,7 @@
 
                 <Grid x:Name="Book_1_3" Grid.Row="1" Grid.Column="3" />
             </Grid>
-            <Grid x:Name="BookView" Margin="0,70,0,0" Visibility="Hidden">
+            <Grid x:Name="BookView" Margin="0,70,0,0">
                 <Grid Margin="-522,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="300" Width="250" >
                     <Image x:Name="BookView_Pic" Margin="0" Width="250" Source="Img/book.png" Height="300"/>
                 </Grid>
@@ -87,15 +87,15 @@
                     <Label x:Name="BookView_bookName" Content="Book Name" HorizontalAlignment="Left" Margin="0,46,0,237" VerticalAlignment="Center" FontSize="32" FontFamily="Segoe UI Light" Height="46" Width="195"/>
                     <Label x:Name="BookView_year" Content="Year of publishing" HorizontalAlignment="Left" Margin="41,0,0,119" VerticalAlignment="Center" FontFamily="Segoe UI Light" RenderTransformOrigin="0.212,0.5" Padding="2,5,5,5"/>
                     <Label x:Name="BookView_authors" Content="Authors" HorizontalAlignment="Left" Margin="0,118,0,180" VerticalAlignment="Center" FontFamily="Segoe UI Light" FontSize="16"/>
-                    <Button x:Name="BookView_Edit" Content="Edit" HorizontalAlignment="Left" Margin="0,132,0,0" VerticalAlignment="Center" Width="75" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C" Click="BookViewEditBtn"/>
-                    <Button x:Name="BookView_Load" Content="Load" HorizontalAlignment="Left" Margin="0,60,0,0" VerticalAlignment="Center" Width="75" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C" Click="LoadBookBtn"/>
-                    <Button x:Name="BookView_Delete" Content="Delete" HorizontalAlignment="Left" Margin="0,204,0,0" VerticalAlignment="Center" Width="75" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C" Click="BookDeleteBtn"/>
+                    <Button x:Name="BookView_Edit" Content="Edit" HorizontalAlignment="Left" Margin="0,60,0,0" VerticalAlignment="Center" Width="75" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C" Click="BookViewEditBtn"/>
+                    <Button x:Name="BookView_Load" Content="Load" HorizontalAlignment="Left" Margin="0,204,0,0" VerticalAlignment="Center" Width="75" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C" Click="LoadBookBtn"/>
+                    <Button x:Name="BookView_Delete" Content="Delete" HorizontalAlignment="Left" Margin="0,132,0,0" VerticalAlignment="Center" Width="75" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C" Click="BookDeleteBtn"/>
                     <Button Content="Back" HorizontalAlignment="Left" Margin="160,204,0,0" VerticalAlignment="Center" Width="90" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C" Click="BtnBack"/>
                     <Label x:Name="BookView_Response" Content="" HorizontalAlignment="Left" Margin="80,132,0,0" VerticalAlignment="Center" RenderTransformOrigin="-0.816,0.192" Background="{x:Null}" Foreground="Red" FontSize="16" FontFamily="Segoe UI Light"/>
                     <Label Content="Year:" HorizontalAlignment="Left" Margin="10,0,0,119" VerticalAlignment="Center" FontFamily="Segoe UI Light" Padding="5,5,2,5"/>
                 </Grid>
             </Grid>
-            <Grid x:Name="BookEdit" Margin="0,70,0,0">
+            <Grid x:Name="BookEdit" Margin="0,70,0,0" Visibility="Hidden">
                 <Grid Margin="-522,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="300" Width="250" >
                     <Image x:Name="BookEdit_Pic" Margin="0" Width="250" Source="Img/book.png" Height="300"/>
                 </Grid>
@@ -109,7 +109,7 @@
                     <TextBox x:Name="BookEdit_BookName" HorizontalAlignment="Left" Height="32" Margin="133,0,0,175" TextWrapping="Wrap" VerticalAlignment="Center" Width="240" Background="White" SelectionBrush="#FF8D66A2" VerticalContentAlignment="Center" FontSize="16" FontFamily="Segoe UI Light"/>
                     <TextBox x:Name="BookEdit_Year" HorizontalAlignment="Left" Height="32" Margin="133,98,0,199" TextWrapping="Wrap" VerticalAlignment="Center" Width="240" Background="White" SelectionBrush="#FF8D66A2" VerticalContentAlignment="Center" FontSize="16" FontFamily="Segoe UI Light"/>
                     <TextBox x:Name="BookEdit_Authors" HorizontalAlignment="Left" Height="32" Margin="133,135,0,162" TextWrapping="Wrap" VerticalAlignment="Center" Width="240" Background="White" SelectionBrush="#FF8D66A2" VerticalContentAlignment="Center" FontSize="16" FontFamily="Segoe UI Light"/>
-                    <Label x:Name="BookEdit_Response" Content="" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Center" RenderTransformOrigin="-0.816,0.192" Background="{x:Null}" Foreground="Red" FontSize="16" FontFamily="Segoe UI Light"/>
+                    <Label x:Name="BookEdit_Response" Content="" HorizontalAlignment="Left" Margin="125,132,0,0" VerticalAlignment="Center" RenderTransformOrigin="-0.816,0.192" Background="{x:Null}" Foreground="Red" FontSize="16" FontFamily="Segoe UI Light"/>
                     <Button Content="Select file" HorizontalAlignment="Left" Margin="0,132,0,0" VerticalAlignment="Center" Width="120" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C" RenderTransformOrigin="0.525,0.419" Click="BtnSelectBookFile"/>
                     <Button Content="Delete image" HorizontalAlignment="Left" Margin="125,60,0,0" VerticalAlignment="Center" Width="120" FontFamily="Segoe UI Light" FontSize="20" Background="{x:Null}" Foreground="#FF311A6C" RenderTransformOrigin="0.525,0.419" Click="BtnDeleteBookImg"/>
                 </Grid>

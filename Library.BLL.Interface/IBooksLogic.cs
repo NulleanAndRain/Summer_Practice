@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 
 namespace Library.BLL.Interface {
 	public interface IBooksLogic {
-		void AddBook(Book book, int userId, Action<string> onSuccess, Action<RejectData> onReject);
+		void AddBook(Book book, int userId, Action<int> onSuccess, Action<RejectData> onReject);
 		List<Book> GetBooks();
 		List<Book> GetBooksWithName(string name);
 		List<Book> GetBooksWithAuthors(string[] authors);
