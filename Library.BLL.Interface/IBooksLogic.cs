@@ -13,7 +13,7 @@ namespace Library.BLL.Interface {
 		void DeleteBook(int id, int userId, Action<string> onSuccess, Action<RejectData> onReject);
 		BitmapImage GetBookImage(int id);
 		void UpdateBookImage(int id, int userId, BitmapImage img, Action<BitmapImage> onSuccess, Action<RejectData> onReject);
-		byte[] GetBookFile(int id);
+		void GetBookFile(int id, Action<byte[], string> onFileLoad);
 		void UpdateBookFile(int id, int userId, byte[] file, string filename, Action onSuccess, Action<RejectData> onReject);
 	}
 }

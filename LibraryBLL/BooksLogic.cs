@@ -75,14 +75,19 @@ namespace LibraryBLL {
 			}
 		}
 
-		public byte[] GetBookFile(int id) {
-			throw new NotImplementedException();
+		public void GetBookFile(int id, Action<byte[], string> onFileLoad) {
+			dao.GetBookFile(id, onFileLoad);
 		}
 
 		public void UpdateBookFile(int id, int userId, byte[] file, string filename, Action onSuccess, Action<RejectData> onReject) {
-			throw new NotImplementedException();
+			try {
+				if (!users.IsUserLoggedIn(userId)) rejectUnauthorised(onReject);
+				dao.UpdateBookFile(id, file, filename);
+				onSuccess();
+			} catch (Exception e) {
+				onReject(new RejectData(RejectType.Exeption, e.Message));
+			}
 		}
-
 		#endregion
 	}
 }

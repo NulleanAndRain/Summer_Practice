@@ -139,6 +139,7 @@ namespace LibraryPL {
 		BitmapImage GetUserImage() {
 			OpenFileDialog dialog = new OpenFileDialog();
 			dialog.Filter = "Image|*.png;*.jpeg;*.jpg;*.gif";
+			dialog.Title = "Select an image file";
 			dialog.Multiselect = false;
 			var res = dialog.ShowDialog();
 			if (res == null || !res.Value) return null;
@@ -272,7 +273,26 @@ namespace LibraryPL {
 			}
 
 			void load() {
+				void onFileLoad(byte[] file, string name) {
+					if (file == null || file.Length == 0 || string.IsNullOrEmpty(name)) {
+						BookView_Response.Content = "This book does not have attached file";
+						return;
+					}
+					var a = name.Split('.');
+					var ext = a[a.Length - 1];
+					var dialog = new SaveFileDialog();
+					dialog.Filter = $"Text file |*.{ext}";
+					dialog.Title = "Save a text file";
+					dialog.FileName = name;
+					var res = dialog.ShowDialog();
 
+					if (res == null || !res.Value) return;
+
+					var fs = dialog.OpenFile();
+					fs.Write(file, 0, file.Length);
+					fs.Close();
+				}
+				BooksLogic.GetBookFile(book.Id, onFileLoad);
 			}
 			onBookLoad = load;
 
@@ -329,7 +349,7 @@ namespace LibraryPL {
 			}
 			onBookSave = save;
 
-			void updateImage() {
+			void updateImage() { //todo: fix adding pic to new book
 				var img = GetUserImage();
 				void onSuccess(BitmapImage _img) {
 					if (_img == null) {
@@ -360,6 +380,7 @@ namespace LibraryPL {
 			void updateFile() {
 				var dialog = new OpenFileDialog();
 				dialog.Filter = "Text files |*.doc;*.docx;*.txt;*.pdf";
+				dialog.Title = "Select a text file";
 				dialog.Multiselect = false;
 				var res = dialog.ShowDialog();
 				if (res == null || !res.Value) return;
@@ -368,7 +389,9 @@ namespace LibraryPL {
 				void onReject(RejectData data) {
 					BookEdit_Response.Content = data.message;
 				}
-				BooksLogic.UpdateBookFile(book.Id, user.Id, file, ()=>{}, onReject);
+				var path = dialog.FileName.Split(Path.DirectorySeparatorChar);
+				var name = path[path.Length - 1];
+				BooksLogic.UpdateBookFile(book.Id, user.Id, file, name, ()=>{}, onReject);
 			}
 			onBookFileUpdate = updateFile;
 

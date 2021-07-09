@@ -3,6 +3,7 @@ using Library.Entities;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Text;
 using System.Windows.Media.Imaging;
 
@@ -113,12 +114,34 @@ namespace LibraryDAL {
 			}
 		}
 
-		public void UpdateBookFile(int id, byte[] file) {
-			throw new NotImplementedException();
+		public void UpdateBookFile(int id, byte[] file, string filename) {
+			var querry = @"UPDATE Books SET AttachedFile = @f, FileName = @n WHERE ID = @id";
+			if (file == null) file = new byte[0];
+			var p = new List<SqlParameter> {
+				new SqlParameter("@f", file),
+				new SqlParameter("@n", filename),
+				new SqlParameter("@id", id)
+			};
+			execNonQuerry(querry, p);
 		}
 
-		public byte[] GetBookFile(int id) {
-			throw new NotImplementedException();
+		public void GetBookFile(int id, Action<byte[], string> onFileLoad) {
+			var querry = @"SELECT AttachedFile, FileName FROM Books WHERE ID = @id";
+			var cmd = new SqlCommand(querry, conn);
+			cmd.Parameters.Add(new SqlParameter("@id", id));
+			using (var reader = cmd.ExecuteReader()) {
+				byte[] file = new byte[0];
+				string name = string.Empty;
+				try {
+					if (reader.Read()) {
+						var ms = new MemoryStream();
+						reader.GetStream(0).CopyTo(ms);
+						file = ms.ToArray();
+						name = reader.GetString(1);
+					}
+				} catch { }
+				onFileLoad(file, name);
+			}
 		}
 
 		#endregion
