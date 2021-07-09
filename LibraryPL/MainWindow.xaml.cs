@@ -4,17 +4,12 @@ using Library.Entities;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace LibraryPL {
@@ -49,7 +44,7 @@ namespace LibraryPL {
 		Stack<Action> BackBtnActions = new Stack<Action>();
 
 		#region Initialisation
-		private string ConnString => $@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\c#\LibraryApp\LibraryDAL\LibDatabase.mdf;Integrated Security=True";
+		private string ConnString => ConfigurationManager.ConnectionStrings["LibDB"].ConnectionString;
 
 		public MainWindow() {
 			InitializeComponent();

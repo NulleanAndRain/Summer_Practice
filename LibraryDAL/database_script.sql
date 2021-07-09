@@ -1,5 +1,6 @@
-USE [D:\C#\LIBRARYAPP\LIBRARYDAL\LIBDATABASE.MDF] --create db and change link
-GO
+CREATE DATABASE LIBDATABASE ON PRIMARY (NAME = 'LibDB', FILENAME = 'LibDB.mdf')
+
+USE LIBDATABASE
 
 CREATE TABLE [dbo].[Books] (
     [ID]               INT            IDENTITY (1, 1) NOT NULL,
@@ -22,10 +23,6 @@ CREATE TABLE [dbo].[Users] (
     PRIMARY KEY CLUSTERED ([ID] ASC),
     CONSTRAINT [U_Username] UNIQUE NONCLUSTERED ([Username] ASC)
 );
-
-
-
-ALTER TABLE Users ADD CONSTRAINT U_Username UNIQUE(Username)
 
 CREATE APPLICATION ROLE lib_app WITH PASSWORD = 'DFa[7wzaVA'
 
