@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -198,9 +199,14 @@ namespace LibraryPL {
 					StringSplitOptions.RemoveEmptyEntries);
 				var l1 = BooksLogic.GetBooksWithName(searchString);
 				var l2 = BooksLogic.GetBooksWithAuthors(authors);
+				var ids_l1 = new List<int>();
+				foreach (var b in l1) {
+					ids_l1.Add(b.Id);
+				}
+				l2.RemoveAll(e => ids_l1.Contains(e.Id));
+				l1.AddRange(l2);
 				Books.Clear();
-				Books.AddRange(l1);
-				Books.AddRange(l2);
+				Books = l1.ToList();
 			} else {
 				Books = BooksLogic.GetBooks();
 			}
