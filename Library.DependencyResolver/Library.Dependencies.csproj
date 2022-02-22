@@ -10,7 +10,7 @@
     <ProjectReference Include="..\Library.BLL.Interface\Library.BLL.Interface.csproj" />
     <ProjectReference Include="..\Library.DAL.Interface\Library.DAL.Interface.csproj" />
     <ProjectReference Include="..\LibraryBLL\Library.BLL.csproj" />
-    <ProjectReference Include="..\LibraryDAL\Library.DAL.csproj" />
+    <ProjectReference Include="..\LibraryDAL\Library.SqlDAL.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
